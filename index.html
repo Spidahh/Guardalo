@@ -911,12 +911,13 @@
       const cards = Array.from(cardsContainer.children);
 
       cards.sort((a, b) => {
-        const getVal = (card, key) => {
-          if (key === "titolo") return card.querySelector("h2").textContent.toLowerCase();
-          if (key === "anno") return parseInt(card.querySelector("p:nth-child(3)").textContent.match(/\d+/));
-          if (key === "voto") return parseFloat(card.querySelector("p:nth-child(3)").textContent.match(/\d+\.?\d*/));
-          if (key === "genere") return card.dataset.genere.toLowerCase();
-        };
+       const getVal = (card, key) => {
+  const text = card.querySelector("p")?.textContent || "";
+  if (key === "titolo") return card.querySelector("h2").textContent.toLowerCase();
+  if (key === "anno") return parseInt(text.match(/📅\s*(\d{4})/)?.[1]) || 0;
+  if (key === "voto") return parseFloat(text.match(/Voto:\s*(\d+)/)?.[1]) || 0;
+  if (key === "genere") return card.dataset.genere.toLowerCase();
+};
 
         const valA = getVal(a, criterio);
         const valB = getVal(b, criterio);
