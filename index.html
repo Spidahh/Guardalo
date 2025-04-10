@@ -2,50 +2,34 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <title>Archivio Anime - Grid + Filtro</title>
+  <title>Archivio Anime - Dark</title>
   <style>
     :root {
-      --bg: #1a1a1d;
-      --card-bg: #2e2e31;
-      --text: #f0f0f0;
-      --accent: #ff2e63;
-      --subtle: #888;
+      --bg: #121212;
+      --card-bg: #1e1e1e;
+      --text: #e0e0e0;
+      --accent: #ff4c60;
+      --muted: #aaaaaa;
+      --font: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
+      margin: 0;
+      padding: 2rem;
       background: var(--bg);
       color: var(--text);
-    }
-
-    select {
-      background: var(--card-bg);
-      color: var(--text);
-      border: 1px solid var(--accent);
-    }
-
-    .card {
-      background: var(--card-bg);
-    }
-
-    .card-content h2 {
-      color: var(--accent);
-    }
-
-    .card-content p {
-      color: var(--subtle);
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      padding: 2rem;
-      margin: 0;
+      font-family: var(--font);
     }
 
     h1 {
       text-align: center;
-      color: #222;
-      margin-bottom: 1rem;
+      font-size: 2rem;
+      color: var(--accent);
+      margin-bottom: 2rem;
     }
 
     #filter {
@@ -55,54 +39,61 @@
     }
 
     select {
-      padding: 0.5rem 1rem;
+      padding: 0.6rem 1rem;
       font-size: 1rem;
       border-radius: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--accent);
+      background-color: var(--card-bg);
+      color: var(--text);
     }
 
     .cards {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 1rem;
+      gap: 1.5rem;
     }
 
     .card {
-      background: #fff;
-      border-radius: 10px;
+      background: var(--card-bg);
+      border-radius: 14px;
       overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       width: 200px;
+      transition: transform 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
       display: flex;
       flex-direction: column;
-      transition: transform 0.2s;
     }
 
     .card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-5px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
     }
 
     .card img {
       width: 100%;
-      height: 120px;
+      height: 130px;
       object-fit: cover;
     }
 
     .card-content {
-      padding: 0.8rem;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
     }
 
     .card-content h2 {
-      margin: 0 0 0.5rem 0;
-      font-size: 1rem;
-      color: #111;
+      margin: 0.5rem 0;
+      font-size: 1.05rem;
+      color: var(--accent);
     }
 
     .card-content p {
       margin: 0.2rem 0;
       font-size: 0.85rem;
-      color: #555;
+      color: var(--muted);
     }
   </style>
 </head>
@@ -133,360 +124,320 @@
       <img src="img/91_days.jpg" alt="91 Days">
       <div class="card-content">
         <h2>91 Days</h2>
-        <p><strong>Genere:</strong> Drammatico</p>
-        <p><strong>Anno:</strong> 2016</p>
-        <p><strong>Voto:</strong> 8</p>
+        <p>Drammatico / Storico</p>
+        <p>🎯 <strong>Voto:</strong> 8 &nbsp;&nbsp; 📅 <strong>2016</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Commedia">
       <img src="img/abenobashi_magical_shopping_street.jpg" alt="Abenobashi Magical Shopping Street">
       <div class="card-content">
         <h2>Abenobashi Magical Shopping Street</h2>
-        <p><strong>Genere:</strong> Commedia</p>
-        <p><strong>Anno:</strong> 2002</p>
-        <p><strong>Voto:</strong> 8</p>
+        <p>Commedia / Fantasy</p>
+        <p>🎯 <strong>Voto:</strong> 8 &nbsp;&nbsp; 📅 <strong>2002</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Azione">
       <img src="img/ajin_demi_human.jpg" alt="Ajin: Demi-Human">
       <div class="card-content">
         <h2>Ajin: Demi-Human</h2>
-        <p><strong>Genere:</strong> Azione</p>
-        <p><strong>Anno:</strong> 2016</p>
-        <p><strong>Voto:</strong> 7</p>
+        <p>Azione / Thriller</p>
+        <p>🎯 <strong>Voto:</strong> 7 &nbsp;&nbsp; 📅 <strong>2016</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Azione">
       <img src="img/akame_ga_kill_.jpg" alt="Akame Ga Kill!">
       <div class="card-content">
         <h2>Akame Ga Kill!</h2>
-        <p><strong>Genere:</strong> Azione</p>
-        <p><strong>Anno:</strong> 2014</p>
-        <p><strong>Voto:</strong> 8</p>
+        <p>Azione / Fantasy oscuro</p>
+        <p>🎯 <strong>Voto:</strong> 8 &nbsp;&nbsp; 📅 <strong>2014</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Sci-Fi">
       <img src="img/akira.jpg" alt="Akira">
       <div class="card-content">
         <h2>Akira</h2>
-        <p><strong>Genere:</strong> Sci-Fi</p>
-        <p><strong>Anno:</strong> 1988</p>
-        <p><strong>Voto:</strong> 9</p>
+        <p>Sci-Fi / Azione</p>
+        <p>🎯 <strong>Voto:</strong> 9 &nbsp;&nbsp; 📅 <strong>1988</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Sci-Fi">
       <img src="img/akudama_drive.jpg" alt="Akudama Drive">
       <div class="card-content">
         <h2>Akudama Drive</h2>
-        <p><strong>Genere:</strong> Sci-Fi</p>
-        <p><strong>Anno:</strong> 2020</p>
-        <p><strong>Voto:</strong> 7</p>
+        <p>Sci-Fi / Azione</p>
+        <p>🎯 <strong>Voto:</strong> 7 &nbsp;&nbsp; 📅 <strong>2020</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Azione">
       <img src="img/arcane_league_of_legends.jpg" alt="Arcane: League of Legends">
       <div class="card-content">
         <h2>Arcane: League of Legends</h2>
-        <p><strong>Genere:</strong> Azione</p>
-        <p><strong>Anno:</strong> 2021</p>
-        <p><strong>Voto:</strong> 9</p>
+        <p>Azione / Avventura</p>
+        <p>🎯 <strong>Voto:</strong> 9 &nbsp;&nbsp; 📅 <strong>2021</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Azione">
       <img src="img/attack_on_titan.jpg" alt="Attack on Titan">
       <div class="card-content">
         <h2>Attack on Titan</h2>
-        <p><strong>Genere:</strong> Azione</p>
-        <p><strong>Anno:</strong> 2013</p>
-        <p><strong>Voto:</strong> 9</p>
+        <p>Azione / Fantasy oscuro</p>
+        <p>🎯 <strong>Voto:</strong> 9 &nbsp;&nbsp; 📅 <strong>2013</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Fantasy oscuro">
       <img src="img/berserk.jpg" alt="Berserk">
       <div class="card-content">
         <h2>Berserk</h2>
-        <p><strong>Genere:</strong> Fantasy oscuro</p>
-        <p><strong>Anno:</strong> 1997</p>
-        <p><strong>Voto:</strong> 10</p>
+        <p>Fantasy oscuro / Azione</p>
+        <p>🎯 <strong>Voto:</strong> 10 &nbsp;&nbsp; 📅 <strong>1997</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Fantasy">
       <img src="img/black_clover.jpg" alt="Black Clover">
       <div class="card-content">
         <h2>Black Clover</h2>
-        <p><strong>Genere:</strong> Fantasy</p>
-        <p><strong>Anno:</strong> 2017</p>
-        <p><strong>Voto:</strong> 8</p>
+        <p>Fantasy / Azione</p>
+        <p>🎯 <strong>Voto:</strong> 8 &nbsp;&nbsp; 📅 <strong>2017</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Azione">
       <img src="img/bleach.jpg" alt="BLEACH">
       <div class="card-content">
         <h2>BLEACH</h2>
-        <p><strong>Genere:</strong> Azione</p>
-        <p><strong>Anno:</strong> 2004</p>
-        <p><strong>Voto:</strong> 10</p>
+        <p>Azione / Fantasy</p>
+        <p>🎯 <strong>Voto:</strong> 10 &nbsp;&nbsp; 📅 <strong>2004</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Fantasy">
       <img src="img/bna_brand_new_animal.jpg" alt="BNA: Brand New Animal">
       <div class="card-content">
         <h2>BNA: Brand New Animal</h2>
-        <p><strong>Genere:</strong> Fantasy</p>
-        <p><strong>Anno:</strong> 2020</p>
-        <p><strong>Voto:</strong> 7</p>
+        <p>Fantasy / Azione</p>
+        <p>🎯 <strong>Voto:</strong> 7 &nbsp;&nbsp; 📅 <strong>2020</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Fantasy">
       <img src="img/burn_the_witch.jpg" alt="Burn the Witch">
       <div class="card-content">
         <h2>Burn the Witch</h2>
-        <p><strong>Genere:</strong> Fantasy</p>
-        <p><strong>Anno:</strong> 2020</p>
-        <p><strong>Voto:</strong> 7</p>
+        <p>Fantasy / Azione</p>
+        <p>🎯 <strong>Voto:</strong> 7 &nbsp;&nbsp; 📅 <strong>2020</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Azione">
       <img src="img/chainsaw_man.jpg" alt="Chainsaw Man">
       <div class="card-content">
         <h2>Chainsaw Man</h2>
-        <p><strong>Genere:</strong> Azione</p>
-        <p><strong>Anno:</strong> 2022</p>
-        <p><strong>Voto:</strong> 8</p>
+        <p>Azione / Horror</p>
+        <p>🎯 <strong>Voto:</strong> 8 &nbsp;&nbsp; 📅 <strong>2022</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Fantasy oscuro">
       <img src="img/claymore.jpg" alt="Claymore">
       <div class="card-content">
         <h2>Claymore</h2>
-        <p><strong>Genere:</strong> Fantasy oscuro</p>
-        <p><strong>Anno:</strong> 2007</p>
-        <p><strong>Voto:</strong> 7</p>
+        <p>Fantasy oscuro / Azione</p>
+        <p>🎯 <strong>Voto:</strong> 7 &nbsp;&nbsp; 📅 <strong>2007</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Sci-Fi">
       <img src="img/cyberpunk_edgerunners.jpg" alt="Cyberpunk: Edgerunners">
       <div class="card-content">
         <h2>Cyberpunk: Edgerunners</h2>
-        <p><strong>Genere:</strong> Sci-Fi</p>
-        <p><strong>Anno:</strong> 2022</p>
-        <p><strong>Voto:</strong> 9</p>
+        <p>Sci-Fi / Azione</p>
+        <p>🎯 <strong>Voto:</strong> 9 &nbsp;&nbsp; 📅 <strong>2022</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Sci-Fi">
       <img src="img/dan_da_dan.jpg" alt="DAN DA DAN">
       <div class="card-content">
         <h2>DAN DA DAN</h2>
-        <p><strong>Genere:</strong> Sci-Fi</p>
-        <p><strong>Anno:</strong> 2025</p>
-        <p><strong>Voto:</strong> 9</p>
+        <p>Sci-Fi / Commedia</p>
+        <p>🎯 <strong>Voto:</strong> 9 &nbsp;&nbsp; 📅 <strong>2025</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Azione">
       <img src="img/darwin_s_game.jpg" alt="Darwin's Game">
       <div class="card-content">
         <h2>Darwin's Game</h2>
-        <p><strong>Genere:</strong> Azione</p>
-        <p><strong>Anno:</strong> 2020</p>
-        <p><strong>Voto:</strong> 7</p>
+        <p>Azione / Thriller</p>
+        <p>🎯 <strong>Voto:</strong> 7 &nbsp;&nbsp; 📅 <strong>2020</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Azione">
       <img src="img/deadman_wonderland.jpg" alt="Deadman Wonderland">
       <div class="card-content">
         <h2>Deadman Wonderland</h2>
-        <p><strong>Genere:</strong> Azione</p>
-        <p><strong>Anno:</strong> 2011</p>
-        <p><strong>Voto:</strong> 7</p>
+        <p>Azione / Horror</p>
+        <p>🎯 <strong>Voto:</strong> 7 &nbsp;&nbsp; 📅 <strong>2011</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Thriller">
       <img src="img/death_note.jpg" alt="Death Note">
       <div class="card-content">
         <h2>Death Note</h2>
-        <p><strong>Genere:</strong> Thriller</p>
-        <p><strong>Anno:</strong> 2006</p>
-        <p><strong>Voto:</strong> 9</p>
+        <p>Thriller / Sovrannaturale</p>
+        <p>🎯 <strong>Voto:</strong> 9 &nbsp;&nbsp; 📅 <strong>2006</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Sci-Fi">
       <img src="img/deca_dence.jpg" alt="Deca-Dence">
       <div class="card-content">
         <h2>Deca-Dence</h2>
-        <p><strong>Genere:</strong> Sci-Fi</p>
-        <p><strong>Anno:</strong> 2020</p>
-        <p><strong>Voto:</strong> 7</p>
+        <p>Sci-Fi / Azione</p>
+        <p>🎯 <strong>Voto:</strong> 7 &nbsp;&nbsp; 📅 <strong>2020</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Azione">
       <img src="img/demon_slayer_kimetsu_no_yaiba.jpg" alt="Demon Slayer: Kimetsu no Yaiba">
       <div class="card-content">
         <h2>Demon Slayer: Kimetsu no Yaiba</h2>
-        <p><strong>Genere:</strong> Azione</p>
-        <p><strong>Anno:</strong> 2019</p>
-        <p><strong>Voto:</strong> 9</p>
+        <p>Azione / Fantasy oscuro</p>
+        <p>🎯 <strong>Voto:</strong> 9 &nbsp;&nbsp; 📅 <strong>2019</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Azione">
       <img src="img/devil_may_cry.jpg" alt="Devil May Cry">
       <div class="card-content">
         <h2>Devil May Cry</h2>
-        <p><strong>Genere:</strong> Azione</p>
-        <p><strong>Anno:</strong> 2025</p>
-        <p><strong>Voto:</strong> 8</p>
+        <p>Azione / Fantasy oscuro</p>
+        <p>🎯 <strong>Voto:</strong> 8 &nbsp;&nbsp; 📅 <strong>2025</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Horror">
       <img src="img/devilman_crybaby.jpg" alt="Devilman Crybaby">
       <div class="card-content">
         <h2>Devilman Crybaby</h2>
-        <p><strong>Genere:</strong> Horror</p>
-        <p><strong>Anno:</strong> 2018</p>
-        <p><strong>Voto:</strong> 8</p>
+        <p>Horror / Azione</p>
+        <p>🎯 <strong>Voto:</strong> 8 &nbsp;&nbsp; 📅 <strong>2018</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Azione">
       <img src="img/drifters.jpg" alt="Drifters">
       <div class="card-content">
         <h2>Drifters</h2>
-        <p><strong>Genere:</strong> Azione</p>
-        <p><strong>Anno:</strong> 2016</p>
-        <p><strong>Voto:</strong> 7</p>
+        <p>Azione / Fantasy</p>
+        <p>🎯 <strong>Voto:</strong> 7 &nbsp;&nbsp; 📅 <strong>2016</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Thriller">
       <img src="img/erased.jpg" alt="Erased">
       <div class="card-content">
         <h2>Erased</h2>
-        <p><strong>Genere:</strong> Thriller</p>
-        <p><strong>Anno:</strong> 2016</p>
-        <p><strong>Voto:</strong> 7</p>
+        <p>Thriller / Sovrannaturale</p>
+        <p>🎯 <strong>Voto:</strong> 7 &nbsp;&nbsp; 📅 <strong>2016</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Isekai">
       <img src="img/failure_frame_i_became_the_strongest_and_can_annihilate_everything_with_low_level_spells.jpg" alt="Failure Frame: I Became the Strongest and Can Annihilate Everything With Low-Level Spells">
       <div class="card-content">
         <h2>Failure Frame: I Became the Strongest and Can Annihilate Everything With Low-Level Spells</h2>
-        <p><strong>Genere:</strong> Isekai</p>
-        <p><strong>Anno:</strong> 2024</p>
-        <p><strong>Voto:</strong> 8</p>
+        <p>Isekai / Fantasy</p>
+        <p>🎯 <strong>Voto:</strong> 8 &nbsp;&nbsp; 📅 <strong>2024</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Azione">
       <img src="img/fate_zero.jpg" alt="Fate/Zero">
       <div class="card-content">
         <h2>Fate/Zero</h2>
-        <p><strong>Genere:</strong> Azione</p>
-        <p><strong>Anno:</strong> 2011</p>
-        <p><strong>Voto:</strong> 7</p>
+        <p>Azione / Fantasy</p>
+        <p>🎯 <strong>Voto:</strong> 7 &nbsp;&nbsp; 📅 <strong>2011</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Sci-Fi">
       <img src="img/flcl.jpg" alt="FLCL">
       <div class="card-content">
         <h2>FLCL</h2>
-        <p><strong>Genere:</strong> Sci-Fi</p>
-        <p><strong>Anno:</strong> 2000</p>
-        <p><strong>Voto:</strong> 8</p>
+        <p>Sci-Fi / Commedia</p>
+        <p>🎯 <strong>Voto:</strong> 8 &nbsp;&nbsp; 📅 <strong>2000</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Azione">
       <img src="img/fullmetal_alchemist_brotherhood.jpg" alt="Fullmetal Alchemist: Brotherhood">
       <div class="card-content">
         <h2>Fullmetal Alchemist: Brotherhood</h2>
-        <p><strong>Genere:</strong> Azione</p>
-        <p><strong>Anno:</strong> 2009</p>
-        <p><strong>Voto:</strong> 10</p>
+        <p>Azione / Fantasy</p>
+        <p>🎯 <strong>Voto:</strong> 10 &nbsp;&nbsp; 📅 <strong>2009</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Azione">
       <img src="img/future_diary.jpg" alt="Future Diary">
       <div class="card-content">
         <h2>Future Diary</h2>
-        <p><strong>Genere:</strong> Azione</p>
-        <p><strong>Anno:</strong> 2015</p>
-        <p><strong>Voto:</strong> 8</p>
+        <p>Azione / Thriller</p>
+        <p>🎯 <strong>Voto:</strong> 8 &nbsp;&nbsp; 📅 <strong>2015</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Azione">
       <img src="img/gangsta_.jpg" alt="Gangsta.">
       <div class="card-content">
         <h2>Gangsta.</h2>
-        <p><strong>Genere:</strong> Azione</p>
-        <p><strong>Anno:</strong> 2004</p>
-        <p><strong>Voto:</strong> 9</p>
+        <p>Azione / Drammatico</p>
+        <p>🎯 <strong>Voto:</strong> 9 &nbsp;&nbsp; 📅 <strong>2004</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Azione">
       <img src="img/gantz.jpg" alt="Gantz">
       <div class="card-content">
         <h2>Gantz</h2>
-        <p><strong>Genere:</strong> Azione</p>
-        <p><strong>Anno:</strong> 2015</p>
-        <p><strong>Voto:</strong> 8</p>
+        <p>Azione / Sci-Fi</p>
+        <p>🎯 <strong>Voto:</strong> 8 &nbsp;&nbsp; 📅 <strong>2015</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Azione">
       <img src="img/gate_thus_the_jsdf_fought_there_.jpg" alt="Gate: Thus the JSDF Fought There!">
       <div class="card-content">
         <h2>Gate: Thus the JSDF Fought There!</h2>
-        <p><strong>Genere:</strong> Azione</p>
-        <p><strong>Anno:</strong> 2016</p>
-        <p><strong>Voto:</strong> 8</p>
+        <p>Azione / Fantasy</p>
+        <p>🎯 <strong>Voto:</strong> 8 &nbsp;&nbsp; 📅 <strong>2016</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Fantasy">
       <img src="img/grimgar_of_fantasy_and_ash.jpg" alt="Grimgar of Fantasy and Ash">
       <div class="card-content">
         <h2>Grimgar of Fantasy and Ash</h2>
-        <p><strong>Genere:</strong> Fantasy</p>
-        <p><strong>Anno:</strong> 2007</p>
-        <p><strong>Voto:</strong> 9</p>
+        <p>Fantasy / Avventura</p>
+        <p>🎯 <strong>Voto:</strong> 9 &nbsp;&nbsp; 📅 <strong>2007</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Azione">
       <img src="img/gurren_lagann.jpg" alt="Gurren Lagann">
       <div class="card-content">
         <h2>Gurren Lagann</h2>
-        <p><strong>Genere:</strong> Azione</p>
-        <p><strong>Anno:</strong> 2023</p>
-        <p><strong>Voto:</strong> 8</p>
+        <p>Azione / Sci-Fi</p>
+        <p>🎯 <strong>Voto:</strong> 8 &nbsp;&nbsp; 📅 <strong>2023</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Isekai">
       <img src="img/handyman_saitou_in_another_world.jpg" alt="Handyman Saitou in Another World">
       <div class="card-content">
         <h2>Handyman Saitou in Another World</h2>
-        <p><strong>Genere:</strong> Isekai</p>
-        <p><strong>Anno:</strong> 2023</p>
-        <p><strong>Voto:</strong> 9</p>
+        <p>Isekai / Fantasy</p>
+        <p>🎯 <strong>Voto:</strong> 9 &nbsp;&nbsp; 📅 <strong>2023</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Sci-Fi">
       <img src="img/heavenly_delusion.jpg" alt="Heavenly Delusion">
       <div class="card-content">
         <h2>Heavenly Delusion</h2>
-        <p><strong>Genere:</strong> Sci-Fi</p>
-        <p><strong>Anno:</strong> 2023</p>
-        <p><strong>Voto:</strong> 8</p>
+        <p>Sci-Fi / Mistero</p>
+        <p>🎯 <strong>Voto:</strong> 8 &nbsp;&nbsp; 📅 <strong>2023</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Azione">
       <img src="img/hell_s_paradise_jigokuraku.jpg" alt="Hell's Paradise: Jigokuraku">
       <div class="card-content">
         <h2>Hell's Paradise: Jigokuraku</h2>
-        <p><strong>Genere:</strong> Azione</p>
-        <p><strong>Anno:</strong> 2006</p>
-        <p><strong>Voto:</strong> 7</p>
+        <p>Azione / Fantasy oscuro</p>
+        <p>🎯 <strong>Voto:</strong> 7 &nbsp;&nbsp; 📅 <strong>2006</strong></p>
       </div>
     </div>
     <div class="card" data-genere="Azione">
       <img src="img/hellsing_ultimate.jpg" alt="Hellsing Ultimate">
       <div class="card-content">
         <h2>Hellsing Ultimate</h2>
-        <p><strong>Genere:</strong> Azione</p>
-        <p><strong>Anno:</strong> 2011</p>
-        <p><strong>Voto:</strong> 9</p>
+        <p>Azione / Horror</p>
+        <p>🎯 <strong>Voto:</strong> 9 &nbsp;&nbsp; 📅 <strong>2011</strong></p>
       </div>
     </div>
   </div>
