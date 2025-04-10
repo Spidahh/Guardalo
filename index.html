@@ -11,131 +11,250 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #f9f9f9;
+      background: #f2f2f2;
       color: #333;
       padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
 
     h1 {
-      margin-bottom: 2rem;
-      font-weight: 600;
+      text-align: center;
+      margin-bottom: 1.5rem;
       font-size: 2rem;
       color: #222;
+    }
+
+    #filter {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    select {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
     }
 
     .cards {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 2rem;
+      gap: 1.5rem;
     }
 
     .card {
       background: white;
       border-radius: 16px;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
       overflow: hidden;
-      width: 300px;
+      width: 260px;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
     }
 
     .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     }
 
     .card img {
       width: 100%;
-      height: 420px;
+      height: 180px;
       object-fit: cover;
-      display: block;
-    }
-
-    .card h2 {
-      margin: 1rem 0 0.5rem;
-      font-size: 1.4rem;
-      font-weight: 600;
-    }
-
-    .card p {
-      margin: 0.3rem 0;
-      font-size: 0.95rem;
-      color: #555;
     }
 
     .card-content {
-      padding: 1rem 1.2rem 1.5rem;
-      text-align: left;
+      padding: 1rem 1.2rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card h2 {
+      font-size: 1.2rem;
+      margin: 0 0 0.5rem;
+      color: #111;
+    }
+
+    .card p {
+      margin: 0.2rem 0;
+      font-size: 0.9rem;
+      color: #555;
     }
   </style>
 </head>
 <body>
   <h1>Archivio Film</h1>
-  <div class="cards">
 
-    <div class="card">
+  <div id="filter">
+    <select id="genere-select" onchange="filtroGenere()">
+      <option value="Tutti">Tutti i generi</option>
+      <option value="Avventura">Avventura</option>
+      <option value="Azione">Azione</option>
+      <option value="Commedia">Commedia</option>
+      <option value="Drammatico">Drammatico</option>
+      <option value="Fantasy">Fantasy</option>
+      <option value="Fantasy oscuro">Fantasy oscuro</option>
+      <option value="Horror">Horror</option>
+      <option value="Isekai">Isekai</option>
+      <option value="Mistero">Mistero</option>
+      <option value="Sci-Fi">Sci-Fi</option>
+      <option value="Storico">Storico</option>
+      <option value="Thriller">Thriller</option>
+    </select>
+  </div>
+
+  <div class="cards" id="cards-container">
+
+    <div class="card" data-genere="Drammatico">
       <img src="img/91_days.jpg" alt="Locandina di 91 Days">
       <div class="card-content">
         <h2>91 Days</h2>
-        <p><strong>Genere principale:</strong> Drammatico</p>
-        <p><strong>Genere secondario:</strong> Storico</p>
+        <p><strong>Genere 1:</strong> Drammatico</p>
+        <p><strong>Genere 2:</strong> Storico</p>
         <p><strong>Voto:</strong> 8</p>
         <p><strong>Anno:</strong> 2016</p>
       </div>
     </div>
-    <div class="card">
+
+    <div class="card" data-genere="Commedia">
       <img src="img/abenobashi_magical_shopping_street.jpg" alt="Locandina di Abenobashi Magical Shopping Street">
       <div class="card-content">
         <h2>Abenobashi Magical Shopping Street</h2>
-        <p><strong>Genere principale:</strong> Commedia</p>
-        <p><strong>Genere secondario:</strong> Fantasy</p>
+        <p><strong>Genere 1:</strong> Commedia</p>
+        <p><strong>Genere 2:</strong> Fantasy</p>
         <p><strong>Voto:</strong> 8</p>
         <p><strong>Anno:</strong> 2002</p>
       </div>
     </div>
-    <div class="card">
+
+    <div class="card" data-genere="Azione">
       <img src="img/ajin_demi_human.jpg" alt="Locandina di Ajin: Demi-Human">
       <div class="card-content">
         <h2>Ajin: Demi-Human</h2>
-        <p><strong>Genere principale:</strong> Azione</p>
-        <p><strong>Genere secondario:</strong> Thriller</p>
+        <p><strong>Genere 1:</strong> Azione</p>
+        <p><strong>Genere 2:</strong> Thriller</p>
         <p><strong>Voto:</strong> 7</p>
         <p><strong>Anno:</strong> 2016</p>
       </div>
     </div>
-    <div class="card">
+
+    <div class="card" data-genere="Azione">
       <img src="img/akame_ga_kill_.jpg" alt="Locandina di Akame Ga Kill!">
       <div class="card-content">
         <h2>Akame Ga Kill!</h2>
-        <p><strong>Genere principale:</strong> Azione</p>
-        <p><strong>Genere secondario:</strong> Fantasy oscuro</p>
+        <p><strong>Genere 1:</strong> Azione</p>
+        <p><strong>Genere 2:</strong> Fantasy oscuro</p>
         <p><strong>Voto:</strong> 8</p>
         <p><strong>Anno:</strong> 2014</p>
       </div>
     </div>
-    <div class="card">
+
+    <div class="card" data-genere="Sci-Fi">
       <img src="img/akira.jpg" alt="Locandina di Akira">
       <div class="card-content">
         <h2>Akira</h2>
-        <p><strong>Genere principale:</strong> Sci-Fi</p>
-        <p><strong>Genere secondario:</strong> Azione</p>
+        <p><strong>Genere 1:</strong> Sci-Fi</p>
+        <p><strong>Genere 2:</strong> Azione</p>
         <p><strong>Voto:</strong> 9</p>
         <p><strong>Anno:</strong> 1988</p>
       </div>
     </div>
-    <div class="card">
+
+    <div class="card" data-genere="Sci-Fi">
       <img src="img/akudama_drive.jpg" alt="Locandina di Akudama Drive">
       <div class="card-content">
         <h2>Akudama Drive</h2>
-        <p><strong>Genere principale:</strong> Sci-Fi</p>
-        <p><strong>Genere secondario:</strong> Azione</p>
+        <p><strong>Genere 1:</strong> Sci-Fi</p>
+        <p><strong>Genere 2:</strong> Azione</p>
         <p><strong>Voto:</strong> 7</p>
         <p><strong>Anno:</strong> 2020</p>
       </div>
     </div>
+
+    <div class="card" data-genere="Azione">
+      <img src="img/arcane_league_of_legends.jpg" alt="Locandina di Arcane: League of Legends">
+      <div class="card-content">
+        <h2>Arcane: League of Legends</h2>
+        <p><strong>Genere 1:</strong> Azione</p>
+        <p><strong>Genere 2:</strong> Avventura</p>
+        <p><strong>Voto:</strong> 9</p>
+        <p><strong>Anno:</strong> 2021</p>
+      </div>
+    </div>
+
+    <div class="card" data-genere="Azione">
+      <img src="img/attack_on_titan.jpg" alt="Locandina di Attack on Titan">
+      <div class="card-content">
+        <h2>Attack on Titan</h2>
+        <p><strong>Genere 1:</strong> Azione</p>
+        <p><strong>Genere 2:</strong> Fantasy oscuro</p>
+        <p><strong>Voto:</strong> 9</p>
+        <p><strong>Anno:</strong> 2013</p>
+      </div>
+    </div>
+
+    <div class="card" data-genere="Fantasy oscuro">
+      <img src="img/berserk.jpg" alt="Locandina di Berserk">
+      <div class="card-content">
+        <h2>Berserk</h2>
+        <p><strong>Genere 1:</strong> Fantasy oscuro</p>
+        <p><strong>Genere 2:</strong> Azione</p>
+        <p><strong>Voto:</strong> 10</p>
+        <p><strong>Anno:</strong> 1997</p>
+      </div>
+    </div>
+
+    <div class="card" data-genere="Fantasy">
+      <img src="img/black_clover.jpg" alt="Locandina di Black Clover">
+      <div class="card-content">
+        <h2>Black Clover</h2>
+        <p><strong>Genere 1:</strong> Fantasy</p>
+        <p><strong>Genere 2:</strong> Azione</p>
+        <p><strong>Voto:</strong> 8</p>
+        <p><strong>Anno:</strong> 2017</p>
+      </div>
+    </div>
+
+    <div class="card" data-genere="Azione">
+      <img src="img/bleach.jpg" alt="Locandina di BLEACH">
+      <div class="card-content">
+        <h2>BLEACH</h2>
+        <p><strong>Genere 1:</strong> Azione</p>
+        <p><strong>Genere 2:</strong> Fantasy</p>
+        <p><strong>Voto:</strong> 10</p>
+        <p><strong>Anno:</strong> 2004</p>
+      </div>
+    </div>
+
+    <div class="card" data-genere="Fantasy">
+      <img src="img/bna_brand_new_animal.jpg" alt="Locandina di BNA: Brand New Animal">
+      <div class="card-content">
+        <h2>BNA: Brand New Animal</h2>
+        <p><strong>Genere 1:</strong> Fantasy</p>
+        <p><strong>Genere 2:</strong> Azione</p>
+        <p><strong>Voto:</strong> 7</p>
+        <p><strong>Anno:</strong> 2020</p>
+      </div>
+    </div>
+
   </div>
+
+  <script>
+    function filtroGenere() {
+      const genere = document.getElementById('genere-select').value;
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        if (genere === 'Tutti' || card.dataset.genere === genere) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
 </body>
 </html>
