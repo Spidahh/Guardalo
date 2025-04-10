@@ -1,15 +1,44 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Archivio Film</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Film</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f0f0f0;
+      padding: 2rem;
+      text-align: center;
+    }
+    .card {
+      background: white;
+      display: inline-block;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      width: 300px;
+    }
+    .card img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .card h2 {
+      margin: 1rem 0 0.5rem;
+    }
+    .card p {
+      margin: 0.3rem 0;
+    }
+  </style>
 </head>
 <body>
   <h1>Archivio Film</h1>
-  <div class="cards" id="cards-container"></div>
-
-  <script src="script.js"></script>
+  <div class="card">
+    <img src="img/akira.jpg" alt="Akira">
+    <h2>Akira</h2>
+    <p><strong>Genere principale:</strong> Sci-Fi</p>
+    <p><strong>Genere secondario:</strong> Azione</p>
+    <p><strong>Voto:</strong> 9</p>
+    <p><strong>Anno:</strong> 1988</p>
+  </div>
 </body>
 </html>
