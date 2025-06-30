@@ -44,7 +44,7 @@ select {
     cursor: pointer;
 }
 
-/* Schede più piccole e compatte */
+/* Contenitore principale della griglia */
 .cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -52,12 +52,17 @@ select {
     padding: 1rem 0;
 }
 
+/* Stile della scheda singola (Card) */
 .card {
     background: var(--card-bg);
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    
+    /* Regole fondamentali per l'allineamento verticale */
+    display: flex;
+    flex-direction: column;
 }
 
 .card:hover {
@@ -65,7 +70,6 @@ select {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
 }
 
-/* Immagine più piccola per ridurre l'altezza totale */
 .card img {
     width: 100%;
     height: 280px;
@@ -73,35 +77,42 @@ select {
     display: block;
 }
 
+/* Contenitore del testo dentro la scheda */
 .card-content {
     padding: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem; 
+    gap: 0.5rem;
+    text-align: center;
+    align-items: center;
+    flex-grow: 1; /* Permette a questo blocco di riempire lo spazio verticale */
 }
 
-/* Titolo con altezza fissa per uniformare le schede */
+/* Stile del titolo H2 */
 .card-content h2 {
     font-size: 1.1rem;
     color: var(--accent);
     margin: 0;
     line-height: 1.3;
-    min-height: 2.6em;
+    min-height: 2.6em; /* Riserva lo spazio per 2 righe di testo */
     display: flex;
     align-items: center;
 }
 
+/* Stile del genere */
 .genres {
     font-size: 0.8rem;
     font-weight: bold;
     color: #fff;
 }
 
+/* Blocco per Voto e Anno */
 .meta {
     font-size: 0.8rem;
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
+    margin-top: auto; /* Spinge questo blocco in fondo alla scheda */
 }
 
 .meta span {
