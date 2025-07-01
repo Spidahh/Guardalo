@@ -193,10 +193,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Event listener per i filtri
     genreSelect.addEventListener('change', updateDisplay);
     statusSelect.addEventListener('change', updateDisplay);
     sortSelect.addEventListener('change', updateDisplay);
 
+    // Inizializzazione della pagina
     populateGenres();
+    
+    // NUOVO: Controllo per la visualizzazione di default su mobile
+    if (window.innerWidth <= 768) {
+        // Simula un click sul bottone della vista a lista
+        listViewBtn.click();
+    }
+    
     updateDisplay();
 });
