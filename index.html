@@ -7,25 +7,37 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <div id="filter-bar">
-        <input type="text" id="search-input" placeholder="Cerca per titolo...">
         <select id="genere-select">
             <option value="Tutti">Tutti i generi</option>
         </select>
         <select id="status-select">
             <option value="Tutti">Tutti gli stati</option>
-            <option value="Finito">Finito</option>
             <option value="In corso">In corso</option>
-            <option value="Prossimamente">Prossimamente</option>
+            <option value="Finito">Finito</option>
             <option value="Film">Film</option>
         </select>
+        <div id="view-switcher">
+            <button id="grid-view-btn" class="active">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M3,11H11V3H3M3,21H11V13H3M13,21H21V13H13M13,3V11H21V3"/></svg>
+            </button>
+            <button id="list-view-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M3,13H21V11H3M3,21H21V19H3M3,5V7H21V5"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="sort-container">
+        <label for="sort-select">Ordina per:</label>
         <select id="sort-select">
-            <option value="titolo">Ordina per Titolo</option>
-            <option value="anno">Ordina per Anno</option>
+            <option value="titolo">Titolo</option>
+            <option value="anno">Anno</option>
+            <option value="stato">Stato</option>
         </select>
     </div>
 
-    <div class="cards" id="cards-container"></div>
+    <div class="cards grid-view" id="cards-container"></div>
 
     <script src="script.js"></script>
 
@@ -39,14 +51,9 @@
                 <div class="modal-text">
                     <h1 id="modal-title">Nome dell'Anime</h1>
                     <div id="modal-studio" class="studio">Studio di Animazione</div>
-                    
                     <div id="modal-structure"></div>
-
-                    <div id="modal-meta" class="meta">
-                        </div>
-                    <p id="modal-synopsis">
-                        Qui andrà una breve trama o sinossi dell'anime.
-                    </p>
+                    <div id="modal-meta" class="meta"></div>
+                    <p id="modal-synopsis"></p>
                 </div>
             </div>
         </div>

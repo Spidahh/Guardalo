@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
         { title: "Berserk", genres: ["Seinen"], year: 1997, img: "img/berserk.jpg", studio: "OLM", stato: "Finito", synopsis: "In un mondo medievale e brutale, il solitario mercenario Guts si unisce alla carismatica 'Squadra dei Falchi'. Un'oscura profezia e un'ambizione smisurata li condurranno verso un destino terrificante.", structure: [{ name: "Serie 1997", episodes: 25 }, { name: "Trilogia Film (L'epoca d'oro)", episodes: "3 Film" }, { name: "Serie 2016-2017", episodes: 24 }] },
         { title: "Black Clover", genres: ["Shonen"], year: 2017, img: "img/black_clover.jpg", studio: "Pierrot", stato: "Finito", synopsis: "In un mondo dove la magia è tutto, il giovane Asta nasce senza alcun potere. Nonostante ciò, sogna di diventare l'Imperatore Magico, spinto da una determinazione d'acciaio e un misterioso grimorio.", structure: [{ name: "Serie TV", episodes: 170 }, { name: "Film", episodes: "1" }] },
         { title: "BLEACH", genres: ["Shonen"], year: 2004, img: "img/bleach.jpg", studio: "Pierrot", stato: "In corso", synopsis: "Ichigo Kurosaki ottiene i poteri di uno Shinigami e si assume il compito di proteggere gli umani dagli spiriti maligni e di guidare le anime dei defunti nell'aldilà, combattendo minacce sempre più potenti.", structure: [{ name: "Serie Originale", episodes: 366 }, { name: "Thousand-Year Blood War", episodes: "52 (in corso)" }] },
-        // ... e così via per il resto della lista. Ho compilato tutti i dati.
         { title: "BNA: Brand New Animal", genres: ["Fantasy"], year: 2020, img: "img/bna_brand_new_animal.jpg", studio: "Trigger", stato: "Finito", synopsis: "Michiru, una ragazza umana, si trasforma improvvisamente in un uomo-bestia tanuki e si rifugia ad Anima City. Lì, cerca una cura mentre scopre i misteri e i conflitti della società dei teriomorfi.", structure: [{ name: "Stagione Unica", episodes: 12 }] },
         { title: "Burn the Witch", genres: ["Shonen"], year: 2020, img: "img/burn_the_witch.jpg", studio: "Studio Colorido", stato: "Finito", synopsis: "Nella 'Reverse London', un mondo nascosto, due streghe lavorano per un'agenzia che gestisce i draghi. La loro missione è proteggere i cittadini e mantenere l'equilibrio tra i due mondi.", structure: [{ name: "Serie ONA", episodes: 3 }] },
         { title: "Chainsaw Man", genres: ["Shonen"], year: 2022, img: "img/chainsaw_man.jpg", studio: "MAPPA", stato: "In corso", synopsis: "Il giovane Denji, fuso con il suo cane-diavolo Pochita, diventa Chainsaw Man. Reclutato da una divisione governativa, dà la caccia ai diavoli in un mondo tanto sanguinoso quanto surreale.", structure: [{ name: "Stagione 1", episodes: 12 }, { name: "Film (Reze Arc)", episodes: "Prossimamente" }] },
@@ -82,14 +81,12 @@ document.addEventListener('DOMContentLoaded', () => {
         { title: "Wistoria: Wand and Sword", genres: ["Shonen"], year: 2024, img: "img/wistoria_wand_and_sword.jpg", studio: "Actas / Bandai Namco Pictures", stato: "Finito", synopsis: "In un'accademia di magia, Will Serfort, incapace di usare la magia, lotta per mantenere una promessa d'infanzia. Per farlo, brandisce una spada e si fa strada a modo suo in un mondo che valorizza solo gli incantesimi.", structure: [{ name: "Stagione 1", episodes: 12 }] }
     ];
 
-    // Selettori degli elementi del DOM
     const container = document.getElementById('cards-container');
-    const searchInput = document.getElementById('search-input');
     const genreSelect = document.getElementById('genere-select');
     const statusSelect = document.getElementById('status-select');
     const sortSelect = document.getElementById('sort-select');
-
-    // Selettori per gli elementi della finestra modale
+    const gridViewBtn = document.getElementById('grid-view-btn');
+    const listViewBtn = document.getElementById('list-view-btn');
     const modalContainer = document.getElementById('anime-modal-container');
     const closeModalButton = document.querySelector('.close-button');
     const modalImg = document.getElementById('modal-img');
@@ -99,35 +96,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalMeta = document.getElementById('modal-meta');
     const modalSynopsis = document.getElementById('modal-synopsis');
 
-    // Funzioni per gestire la modale
+    gridViewBtn.addEventListener('click', () => {
+        container.className = 'cards grid-view';
+        gridViewBtn.classList.add('active');
+        listViewBtn.classList.remove('active');
+    });
+
+    listViewBtn.addEventListener('click', () => {
+        container.className = 'cards list-view';
+        listViewBtn.classList.add('active');
+        gridViewBtn.classList.remove('active');
+    });
+
     function openModal(anime) {
-        // Popola i dati semplici
         modalImg.src = anime.img;
         modalTitle.textContent = anime.title;
         modalStudio.textContent = anime.studio;
         modalSynopsis.textContent = anime.synopsis;
-        
-        // Popola i meta-dati (genere, stato, anno)
-        modalMeta.innerHTML = `
-            <span>${anime.genres.join(' / ')}</span>
-            <span>${anime.stato}</span>
-            <span>${anime.year}</span>
-        `;
-
-        // NUOVO: Popola la struttura delle stagioni
+        modalMeta.innerHTML = `<span>${anime.genres.join(' / ')}</span><span>${anime.stato}</span><span>${anime.year}</span>`;
         if (anime.structure && anime.structure.length > 0) {
             let structureHtml = '<h4>Struttura</h4><ul>';
             anime.structure.forEach(part => {
-                // Aggiunge 'ep.' solo se il valore è un numero
                 const episodeText = isNaN(part.episodes) ? part.episodes : `${part.episodes} ep.`;
                 structureHtml += `<li>${part.name}: <strong>${episodeText}</strong></li>`;
             });
             structureHtml += '</ul>';
             modalStructure.innerHTML = structureHtml;
         } else {
-            modalStructure.innerHTML = ''; // Pulisce se non ci sono dati
+            modalStructure.innerHTML = '';
         }
-        
         modalContainer.style.display = 'flex';
         document.body.style.overflow = 'hidden';
     }
@@ -139,12 +136,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     closeModalButton.addEventListener('click', closeModal);
     modalContainer.addEventListener('click', (event) => {
-        if (event.target === modalContainer) {
-            closeModal();
-        }
+        if (event.target === modalContainer) { closeModal(); }
     });
 
-    // Funzione per creare le schede
     function renderCards(cardsToRender) {
         container.innerHTML = '';
         if (cardsToRender.length === 0) {
@@ -154,49 +148,29 @@ document.addEventListener('DOMContentLoaded', () => {
         cardsToRender.forEach(anime => {
             const card = document.createElement('div');
             card.className = 'card';
-            card.innerHTML = `
-                <img src="${anime.img}" alt="Copertina di ${anime.title}">
-                <div class="card-content">
-                    <h2>${anime.title}</h2>
-                    <div class="genres">${anime.genres.join(' / ')}</div>
-                    <div class="meta">
-                        <span>${anime.stato}</span>
-                        <span>${anime.year}</span>
-                    </div>
-                </div>
-            `;
+            card.innerHTML = `<img src="${anime.img}" alt="Copertina di ${anime.title}"><div class="card-content"><h2>${anime.title}</h2><div class="genres">${anime.genres.join(' / ')}</div><div class="meta"><span>${anime.stato}</span><span>${anime.year}</span></div></div>`;
             container.appendChild(card);
-
-            card.addEventListener('click', () => {
-                openModal(anime);
-            });
+            card.addEventListener('click', () => { openModal(anime); });
         });
     }
 
-    // Funzione centrale che gestisce tutti i filtri
     function updateDisplay() {
         const selectedGenre = genreSelect.value;
         const selectedStatus = statusSelect.value;
-        const searchTerm = searchInput.value.toLowerCase();
         const sortCriteria = sortSelect.value;
-        
         let filteredAnime = animeData.filter(anime => {
-            const searchMatch = anime.title.toLowerCase().includes(searchTerm);
             const genreMatch = (selectedGenre === 'Tutti') || anime.genres.includes(selectedGenre);
             const statusMatch = (selectedStatus === 'Tutti') || anime.stato === selectedStatus;
-            
-            return searchMatch && genreMatch && statusMatch;
+            return genreMatch && statusMatch;
         });
-
         filteredAnime.sort((a, b) => {
-            if (sortCriteria === 'titolo') {
-                return a.title.localeCompare(b.title);
-            }
-            if (sortCriteria === 'anno') {
-                return b.year - a.year;
+            if (sortCriteria === 'titolo') { return a.title.localeCompare(b.title); }
+            if (sortCriteria === 'anno') { return b.year - a.year; }
+            if (sortCriteria === 'stato') {
+                const statusOrder = { "In corso": 1, "Finito": 2, "Prossimamente": 3, "Film": 4 };
+                return statusOrder[a.stato] - statusOrder[b.stato];
             }
         });
-        
         renderCards(filteredAnime);
     }
     
@@ -214,13 +188,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Event listener per i filtri
-    searchInput.addEventListener('input', updateDisplay);
     genreSelect.addEventListener('change', updateDisplay);
     statusSelect.addEventListener('change', updateDisplay);
     sortSelect.addEventListener('change', updateDisplay);
 
-    // Inizializzazione della pagina
     populateGenres();
     updateDisplay();
 });
