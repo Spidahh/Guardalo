@@ -12,11 +12,9 @@
 
     <div id="filter-bar">
         <input type="text" id="search-input" placeholder="Cerca per titolo...">
-
         <select id="genere-select">
             <option value="Tutti">Tutti i generi</option>
         </select>
-
         <select id="status-select">
             <option value="Tutti">Tutti gli stati</option>
             <option value="Finito">Finito</option>
@@ -24,7 +22,6 @@
             <option value="Prossimamente">Prossimamente</option>
             <option value="Film">Film</option>
         </select>
-        
         <select id="sort-select">
             <option value="titolo">Ordina per Titolo</option>
             <option value="anno">Ordina per Anno</option>
@@ -34,5 +31,29 @@
     <div class="cards" id="cards-container"></div>
 
     <script src="script.js"></script>
+
+    <div id="anime-modal-container" class="modal-container">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img id="modal-img" src="" alt="Copertina anime">
+                </div>
+                <div class="modal-text">
+                    <h1 id="modal-title">Nome dell'Anime</h1>
+                    <div id="modal-studio" class="studio">Studio di Animazione</div>
+                    
+                    <div id="modal-structure"></div>
+
+                    <div id="modal-meta" class="meta">
+                        </div>
+                    <p id="modal-synopsis">
+                        Qui andrà una breve trama o sinossi dell'anime.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
