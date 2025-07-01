@@ -123,3 +123,12 @@ select {
     border-radius: 4px;
     font-weight: bold;
 }
+
+/* Stile per lo studio di animazione */
+.studio {
+    font-size: 0.8em;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: -0.2rem;
+    margin-bottom: 0.2rem;
+}
