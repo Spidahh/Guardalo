@@ -189,8 +189,10 @@ if (authSwitchBtn) {
         }
         authError.textContent = "";
     });
+} // Added missing brace
 
-    // Handle Login/Register
+// Handle Login/Register
+if (authForm) {
     authForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = authEmailInput.value;
