@@ -164,14 +164,17 @@ const forgotPassBtn = document.getElementById('forgot-password');
 // ...
 
 // Handle Google Login
-googleLoginBtn.addEventListener('click', async () => {
-    try {
-        const result = await signInWithPopup(auth, googleProvider);
-        // The onAuthStateChanged listener will handle the rest
-    } catch (error) {
-        authError.textContent = "Errore Google Login: " + error.message;
-    }
-});
+if (googleLoginBtn) {
+    googleLoginBtn.addEventListener('click', async () => {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            // The onAuthStateChanged listener will handle the rest
+        } catch (error) {
+            if (authError) authError.textContent = "Errore Google Login: " + error.message;
+            console.error(error);
+        }
+    });
+}
 
 // Auth Modal Controls
 loginBtn.addEventListener('click', () => {
@@ -199,14 +202,14 @@ authSwitchBtn.addEventListener('click', () => {
         authTitle.textContent = "Accedi";
         authSubmitBtn.textContent = "Entra";
         authSwitchBtn.innerHTML = `Non hai un account? <strong style="color: white;">Registrati</strong>`;
-        googleLoginBtn.style.display = 'flex'; // Show Google on login
-        document.querySelector('.auth-divider').style.display = 'flex';
+        if (googleLoginBtn) googleLoginBtn.style.display = 'flex'; // Show Google on login
+        if (document.querySelector('.auth-divider')) document.querySelector('.auth-divider').style.display = 'flex';
     } else {
         authTitle.textContent = "Crea Account";
         authSubmitBtn.textContent = "Registrati";
         authSwitchBtn.innerHTML = `Hai già un account? <strong style="color: white;">Accedi</strong>`;
-        googleLoginBtn.style.display = 'none'; // Simplify register view
-        document.querySelector('.auth-divider').style.display = 'none';
+        if (googleLoginBtn) googleLoginBtn.style.display = 'none'; // Simplify register view
+        if (document.querySelector('.auth-divider')) document.querySelector('.auth-divider').style.display = 'none';
     }
     authError.textContent = "";
 });
