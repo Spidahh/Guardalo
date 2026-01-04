@@ -403,20 +403,25 @@ if (modalContainer) {
 }
 
 // View Swithcers
-gridViewBtn.addEventListener('click', () => {
-    container.className = 'cards grid-view';
-    gridViewBtn.classList.add('active');
-    listViewBtn.classList.remove('active');
-});
+if (gridViewBtn) {
+    gridViewBtn.addEventListener('click', () => {
+        container.className = 'cards grid-view';
+        gridViewBtn.classList.add('active');
+        if (listViewBtn) listViewBtn.classList.remove('active');
+    });
+}
 
-listViewBtn.addEventListener('click', () => {
-    container.className = 'cards list-view';
-    listViewBtn.classList.add('active');
-    gridViewBtn.classList.remove('active');
-});
+if (listViewBtn) {
+    listViewBtn.addEventListener('click', () => {
+        container.className = 'cards list-view';
+        listViewBtn.classList.add('active');
+        if (gridViewBtn) gridViewBtn.classList.remove('active');
+    });
+}
 
 
 function populateGenres() {
+    if (!genreSelect) return;
     const allGenres = new Set();
     animeData.forEach(anime => {
         anime.genres.forEach(genre => allGenres.add(genre));
@@ -430,13 +435,13 @@ function populateGenres() {
     });
 }
 
-genreSelect.addEventListener('change', updateDisplay);
-statusSelect.addEventListener('change', updateDisplay);
-sortSelect.addEventListener('change', updateDisplay);
+if (genreSelect) genreSelect.addEventListener('change', updateDisplay);
+if (statusSelect) statusSelect.addEventListener('change', updateDisplay);
+if (sortSelect) sortSelect.addEventListener('change', updateDisplay);
 
 // Init
 populateGenres();
-if (window.innerWidth <= 768) {
+if (window.innerWidth <= 768 && listViewBtn) {
     listViewBtn.click();
 }
 updateDisplay();
