@@ -1,5 +1,5 @@
 // SCRIPT.JS - Compat Mode (No Imports)
-// auth and db are now global variables from firebase-config.js
+// auth and db are now global variables (window.auth, window.db) from firebase-config.js
 
 // === DATABASE DATI ANIME ===
 const animeData = [
@@ -130,19 +130,19 @@ let isLoginMode = true;
 // === USER AUTH LOGIC ===
 
 // Monitor Auth State
-auth.onAuthStateChanged(async (user) => {
+window.auth.onAuthStateChanged(async (user) => {
     currentUser = user;
     if (user) {
         loginBtn.textContent = "Profilo";
         authModal.style.display = 'none';
         // Listener realtime sul database
-        db.collection("users").doc(user.uid).onSnapshot((doc) => {
+        window.db.collection("users").doc(user.uid).onSnapshot((doc) => {
             if (doc.exists) {
                 userLists = doc.data();
                 updateDisplay();
             } else {
                 // Crea profilo vuoto
-                db.collection("users").doc(user.uid).set({ watched: [], towatch: [] });
+                window.db.collection("users").doc(user.uid).set({ watched: [], towatch: [] });
             }
         });
     } else {
@@ -156,9 +156,9 @@ auth.onAuthStateChanged(async (user) => {
 loginBtn.addEventListener('click', () => {
     if (currentUser) {
         // Logout logic
+        // Logout logic
         const confirmLogout = confirm("Vuoi disconnetterti?");
-        const confirmLogout = confirm("Vuoi disconnetterti?");
-        if (confirmLogout) auth.signOut();
+        if (confirmLogout) window.auth.signOut();
     } else {
         authModal.style.display = 'flex';
     }
@@ -181,9 +181,9 @@ authForm.addEventListener('submit', async (e) => {
 
     try {
         if (isLoginMode) {
-            await auth.signInWithEmailAndPassword(email, password);
+            await window.auth.signInWithEmailAndPassword(email, password);
         } else {
-            await auth.createUserWithEmailAndPassword(email, password);
+            await window.auth.createUserWithEmailAndPassword(email, password);
         }
     } catch (error) {
         authError.textContent = error.message;
@@ -217,7 +217,7 @@ async function toggleStatus(animeTitle, listType) {
     }
 
     try {
-        await db.collection("users").doc(currentUser.uid).update({
+        await window.db.collection("users").doc(currentUser.uid).update({
             [listType]: newList,
             [otherList]: otherListContent
         });

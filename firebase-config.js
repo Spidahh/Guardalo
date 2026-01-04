@@ -12,8 +12,10 @@ const firebaseConfig = {
 
 // Initialize Firebase (Global Namespace)
 firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-const googleProvider = new firebase.auth.GoogleAuthProvider();
 
-console.log("Firebase Initialized (Compat Mode)");
+// Make available globally
+window.auth = firebase.auth();
+window.db = firebase.firestore();
+window.googleProvider = new firebase.auth.GoogleAuthProvider();
+
+console.log("Firebase Initialized (Compat Mode) - Globals Ready");
