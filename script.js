@@ -326,12 +326,24 @@ window.toggleCardStatus = (title, type, event) => {
 function updateDisplay() {
     const selectedGenre = genreSelect.value;
     const selectedStatus = statusSelect.value;
+    const selectedUserList = userListSelect ? userListSelect.value : 'Tutti';
     const sortCriteria = sortSelect.value;
+
     let filteredAnime = animeData.filter(anime => {
         const genreMatch = (selectedGenre === 'Tutti') || anime.genres.includes(selectedGenre);
         const statusMatch = (selectedStatus === 'Tutti') || anime.stato === selectedStatus;
-        return genreMatch && statusMatch;
+
+        // Semantic check for user lists
+        let userListMatch = true;
+        if (selectedUserList === 'watched') {
+            userListMatch = userLists.watched && userLists.watched.includes(anime.title);
+        } else if (selectedUserList === 'towatch') {
+            userListMatch = userLists.towatch && userLists.towatch.includes(anime.title);
+        }
+
+        return genreMatch && statusMatch && userListMatch;
     });
+
     filteredAnime.sort((a, b) => {
         if (sortCriteria === 'titolo') { return a.title.localeCompare(b.title); }
         if (sortCriteria === 'anno') { return b.year - a.year; }
@@ -342,6 +354,8 @@ function updateDisplay() {
     });
     renderCards(filteredAnime);
 }
+
+if (userListSelect) userListSelect.addEventListener('change', updateDisplay);
 
 function openModal(anime) {
     modalImg.src = anime.img;
