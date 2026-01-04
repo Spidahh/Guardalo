@@ -103,7 +103,7 @@ const listViewBtn = document.getElementById('list-view-btn');
 
 // Modal Elements
 const modalContainer = document.getElementById('anime-modal-container');
-const closeModalButton = document.querySelector('.close-button');
+const closeModalButton = modalContainer ? modalContainer.querySelector('.close-button') : null;
 const modalImg = document.getElementById('modal-img');
 const modalTitle = document.getElementById('modal-title');
 const modalStudio = document.getElementById('modal-studio');
@@ -389,8 +389,13 @@ listSelect.addEventListener('change', updateDisplay);
 sortSelect.addEventListener('change', updateDisplay);
 
 // Init
-populateGenres();
-if (window.innerWidth <= 768) {
-    listViewBtn.click();
-}
-updateDisplay();
+// Init
+document.addEventListener('DOMContentLoaded', () => {
+    populateGenres();
+    if (window.innerWidth <= 768) {
+        // Only click if element exists
+        const btn = document.getElementById('list-view-btn');
+        if (btn) btn.click();
+    }
+    updateDisplay();
+});
