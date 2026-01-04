@@ -1,5 +1,5 @@
-import { auth, db, googleProvider } from './firebase-config.js';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { auth, db } from './firebase-config.js';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { doc, getDoc, setDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 // === DATABASE DATI ANIME ===
@@ -97,14 +97,13 @@ let userLists = { watched: [], towatch: [] };
 const container = document.getElementById('cards-container');
 const genreSelect = document.getElementById('genere-select');
 const statusSelect = document.getElementById('status-select');
-const userListSelect = document.getElementById('user-list-select'); // Fixed: Added missing declaration
 const sortSelect = document.getElementById('sort-select');
 const gridViewBtn = document.getElementById('grid-view-btn');
 const listViewBtn = document.getElementById('list-view-btn');
 
 // Modal Elements
 const modalContainer = document.getElementById('anime-modal-container');
-const closeModalButton = document.getElementById('close-anime-modal'); // Updated Selector
+const closeModalButton = document.querySelector('.close-button');
 const modalImg = document.getElementById('modal-img');
 const modalTitle = document.getElementById('modal-title');
 const modalStudio = document.getElementById('modal-studio');
@@ -121,100 +120,74 @@ const closeAuthBtn = document.getElementById('close-auth');
 const authForm = document.getElementById('auth-form');
 const authEmailInput = document.getElementById('auth-email');
 const authPassInput = document.getElementById('auth-password');
-const authSubmitBtn = authForm ? authForm.querySelector('button') : null;
+const authSubmitBtn = authForm.querySelector('button');
 const authSwitchBtn = document.getElementById('auth-switch');
 const authTitle = document.getElementById('auth-title');
 const authError = document.getElementById('auth-error');
 
-const googleLoginBtn = document.getElementById('google-login');
-const forgotPassBtn = document.getElementById('forgot-password');
+let isLoginMode = true;
 
-// Handle Google Login
-if (googleLoginBtn) {
-    googleLoginBtn.addEventListener('click', async () => {
-        try {
-            const result = await signInWithPopup(auth, googleProvider);
-            // The onAuthStateChanged listener will handle the rest
-        } catch (error) {
-            if (authError) authError.textContent = "Errore Google Login: " + error.message;
-            console.error(error);
-        }
-    });
-}
+// === USER AUTH LOGIC ===
+
+// Monitor Auth State
+onAuthStateChanged(auth, async (user) => {
+    currentUser = user;
+    if (user) {
+        loginBtn.textContent = "Profilo";
+        authModal.style.display = 'none';
+        // Listener realtime sul database
+        onSnapshot(doc(db, "users", user.uid), (doc) => {
+            if (doc.exists()) {
+                userLists = doc.data();
+                updateDisplay(); // Rerenderizza per aggiornare icone
+            } else {
+                // Crea profilo vuoto se non esiste
+                setDoc(doc.ref, { watched: [], towatch: [] });
+            }
+        });
+    } else {
+        loginBtn.textContent = "Accedi";
+        userLists = { watched: [], towatch: [] };
+        updateDisplay();
+    }
+});
 
 // Auth Modal Controls
-if (loginBtn) {
-    loginBtn.addEventListener('click', () => {
-        if (currentUser) {
-            // Logout logic
-            const confirmLogout = confirm("Vuoi disconnetterti?");
-            if (confirmLogout) signOut(auth);
-        } else {
-            if (authModal) authModal.style.display = 'flex';
-        }
-    });
-}
-
-if (closeAuthBtn) {
-    closeAuthBtn.addEventListener('click', () => {
-        if (authModal) authModal.style.display = 'none';
-    });
-}
-
-// Forgot Password (Simple Alert for now)
-if (forgotPassBtn) {
-    forgotPassBtn.addEventListener('click', () => {
-        alert("Funzione di recupero password in arrivo! Per ora usa 'Continua con Google' o crea un nuovo account.");
-    });
-}
-
-if (authSwitchBtn) {
-    authSwitchBtn.addEventListener('click', () => {
-        isLoginMode = !isLoginMode;
-        // Update UI Text
-        const switchSpan = authSwitchBtn.querySelector('strong');
-
-        if (isLoginMode) {
-            authTitle.textContent = "Accedi";
-            authSubmitBtn.textContent = "Entra";
-            authSwitchBtn.innerHTML = `Non hai un account? <strong style="color: white;">Registrati</strong>`;
-            if (googleLoginBtn) googleLoginBtn.style.display = 'flex'; // Show Google on login
-            if (document.querySelector('.auth-divider')) document.querySelector('.auth-divider').style.display = 'flex';
-        } else {
-            authTitle.textContent = "Crea Account";
-            authSubmitBtn.textContent = "Registrati";
-            authSwitchBtn.innerHTML = `Hai già un account? <strong style="color: white;">Accedi</strong>`;
-            if (googleLoginBtn) googleLoginBtn.style.display = 'none'; // Simplify register view
-            if (document.querySelector('.auth-divider')) document.querySelector('.auth-divider').style.display = 'none';
-        }
-        authError.textContent = "";
-    });
-} // Added missing brace
+loginBtn.addEventListener('click', () => {
+    if (currentUser) {
+        // Logout logic
+        const confirmLogout = confirm("Vuoi disconnetterti?");
+        if (confirmLogout) signOut(auth);
+    } else {
+        authModal.style.display = 'flex';
+    }
+});
+closeAuthBtn.addEventListener('click', () => authModal.style.display = 'none');
+authSwitchBtn.addEventListener('click', () => {
+    isLoginMode = !isLoginMode;
+    authTitle.textContent = isLoginMode ? "Accedi" : "Registrati";
+    authSubmitBtn.textContent = isLoginMode ? "Entra" : "Registrati";
+    authSwitchBtn.textContent = isLoginMode ? "Non hai un account? Registrati" : "Hai già un account? Accedi";
+    authError.textContent = "";
+});
 
 // Handle Login/Register
-if (authForm) {
-    authForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = authEmailInput.value;
-        const password = authPassInput.value;
-        authError.textContent = "";
+authForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = authEmailInput.value;
+    const password = authPassInput.value;
+    authError.textContent = "";
 
-        try {
-            if (isLoginMode) {
-                await signInWithEmailAndPassword(auth, email, password);
-            } else {
-                await createUserWithEmailAndPassword(auth, email, password);
-            }
-        } catch (error) {
-            let msg = error.message;
-            if (error.code === 'auth/invalid-email') msg = "Email non valida.";
-            if (error.code === 'auth/wrong-password') msg = "Password errata.";
-            if (error.code === 'auth/user-not-found') msg = "Utente non trovato.";
-            if (error.code === 'auth/email-already-in-use') msg = "Email già in uso.";
-            authError.textContent = msg;
+    try {
+        if (isLoginMode) {
+            await signInWithEmailAndPassword(auth, email, password);
+        } else {
+            await createUserWithEmailAndPassword(auth, email, password);
         }
-    });
-}
+    } catch (error) {
+        authError.textContent = error.message;
+    }
+});
 
 // === DATABASE LOGIC ===
 
@@ -255,7 +228,6 @@ async function toggleStatus(animeTitle, listType) {
 // === RENDER LOGIC ===
 
 function renderCards(cardsToRender) {
-    if (!container) return; // Safety Check
     container.innerHTML = '';
     if (cardsToRender.length === 0) {
         container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; grid-column: 1 / -1; margin-top: 2rem;">Nessun anime trovato con questi criteri.</p>';
@@ -304,26 +276,14 @@ window.toggleCardStatus = (title, type, event) => {
 };
 
 function updateDisplay() {
-    const selectedGenre = genreSelect ? genreSelect.value : 'Tutti';
-    const selectedStatus = statusSelect ? statusSelect.value : 'Tutti';
-    const selectedUserList = userListSelect ? userListSelect.value : 'Tutti';
-    const sortCriteria = sortSelect ? sortSelect.value : 'titolo';
-
+    const selectedGenre = genreSelect.value;
+    const selectedStatus = statusSelect.value;
+    const sortCriteria = sortSelect.value;
     let filteredAnime = animeData.filter(anime => {
         const genreMatch = (selectedGenre === 'Tutti') || anime.genres.includes(selectedGenre);
         const statusMatch = (selectedStatus === 'Tutti') || anime.stato === selectedStatus;
-
-        // Semantic check for user lists
-        let userListMatch = true;
-        if (selectedUserList === 'watched') {
-            userListMatch = userLists.watched && userLists.watched.includes(anime.title);
-        } else if (selectedUserList === 'towatch') {
-            userListMatch = userLists.towatch && userLists.towatch.includes(anime.title);
-        }
-
-        return genreMatch && statusMatch && userListMatch;
+        return genreMatch && statusMatch;
     });
-
     filteredAnime.sort((a, b) => {
         if (sortCriteria === 'titolo') { return a.title.localeCompare(b.title); }
         if (sortCriteria === 'anno') { return b.year - a.year; }
@@ -335,98 +295,70 @@ function updateDisplay() {
     renderCards(filteredAnime);
 }
 
-if (userListSelect) {
-    userListSelect.addEventListener('change', () => {
-        if (!currentUser && userListSelect.value !== 'Tutti') {
-            userListSelect.value = 'Tutti';
-            updateDisplay();
-            authModal.style.display = 'flex'; // Alert user to login
-            return;
-        }
-        updateDisplay();
-    });
-}
-
 function openModal(anime) {
-    if (modalImg) modalImg.src = anime.img;
-    if (modalTitle) modalTitle.textContent = anime.title;
-    if (modalStudio) modalStudio.textContent = anime.studio;
-    if (modalSynopsis) modalSynopsis.textContent = anime.synopsis;
-    if (modalMeta) modalMeta.innerHTML = `<span>${anime.genres.join(' / ')}</span><span>${anime.stato}</span><span>${anime.year}</span>`;
+    modalImg.src = anime.img;
+    modalTitle.textContent = anime.title;
+    modalStudio.textContent = anime.studio;
+    modalSynopsis.textContent = anime.synopsis;
+    modalMeta.innerHTML = `<span>${anime.genres.join(' / ')}</span><span>${anime.stato}</span><span>${anime.year}</span>`;
 
-    if (modalStructure) {
-        if (anime.structure && anime.structure.length > 0) {
-            let structureHtml = '<h4>Struttura</h4><ul>';
-            anime.structure.forEach(part => {
-                const episodeText = isNaN(part.episodes) ? part.episodes : `${part.episodes} ep.`;
-                structureHtml += `<li>${part.name}: <strong>${episodeText}</strong></li>`;
-            });
-            structureHtml += '</ul>';
-            modalStructure.innerHTML = structureHtml;
-        } else {
-            modalStructure.innerHTML = '';
-        }
+    if (anime.structure && anime.structure.length > 0) {
+        let structureHtml = '<h4>Struttura</h4><ul>';
+        anime.structure.forEach(part => {
+            const episodeText = isNaN(part.episodes) ? part.episodes : `${part.episodes} ep.`;
+            structureHtml += `<li>${part.name}: <strong>${episodeText}</strong></li>`;
+        });
+        structureHtml += '</ul>';
+        modalStructure.innerHTML = structureHtml;
+    } else {
+        modalStructure.innerHTML = '';
     }
 
     // Modal Action Buttons State
     const isWatched = userLists.watched && userLists.watched.includes(anime.title);
     const isToWatch = userLists.towatch && userLists.towatch.includes(anime.title);
 
-    if (modalToggleWatched) {
-        modalToggleWatched.className = `auth-btn ${isWatched ? 'active' : ''}`;
-        modalToggleWatched.style.background = isWatched ? '#00e676' : 'transparent';
-        modalToggleWatched.style.color = isWatched ? 'black' : 'var(--accent)';
-        modalToggleWatched.onclick = () => toggleStatus(anime.title, 'watched').then(() => openModal(anime));
-    }
+    modalToggleWatched.className = `auth-btn ${isWatched ? 'active' : ''}`;
+    modalToggleWatched.style.background = isWatched ? '#00e676' : 'transparent';
+    modalToggleWatched.style.color = isWatched ? 'black' : 'var(--accent)';
 
-    if (modalToggleTowatch) {
-        modalToggleTowatch.className = `auth-btn ${isToWatch ? 'active' : ''}`;
-        modalToggleTowatch.style.background = isToWatch ? '#ffea00' : 'transparent';
-        modalToggleTowatch.style.color = isToWatch ? 'black' : 'var(--accent)';
-        modalToggleTowatch.onclick = () => toggleStatus(anime.title, 'towatch').then(() => openModal(anime));
-    }
+    modalToggleTowatch.className = `auth-btn ${isToWatch ? 'active' : ''}`;
+    modalToggleTowatch.style.background = isToWatch ? '#ffea00' : 'transparent';
+    modalToggleTowatch.style.color = isToWatch ? 'black' : 'var(--accent)';
 
-    if (modalContainer) {
-        modalContainer.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    }
+    // Attach listeners dynamically
+    modalToggleWatched.onclick = () => toggleStatus(anime.title, 'watched').then(() => openModal(anime));
+    modalToggleTowatch.onclick = () => toggleStatus(anime.title, 'towatch').then(() => openModal(anime));
+
+    modalContainer.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
 }
 
 function closeModal() {
-    if (modalContainer) modalContainer.style.display = 'none';
+    modalContainer.style.display = 'none';
     document.body.style.overflow = 'auto';
 }
 
-if (closeModalButton) {
-    closeModalButton.addEventListener('click', closeModal);
-}
-
-if (modalContainer) {
-    modalContainer.addEventListener('click', (event) => {
-        if (event.target === modalContainer) { closeModal(); }
-    });
-}
+closeModalButton.addEventListener('click', closeModal);
+modalContainer.addEventListener('click', (event) => {
+    if (event.target === modalContainer) { closeModal(); }
+});
 
 // View Swithcers
-if (gridViewBtn) {
-    gridViewBtn.addEventListener('click', () => {
-        container.className = 'cards grid-view';
-        gridViewBtn.classList.add('active');
-        if (listViewBtn) listViewBtn.classList.remove('active');
-    });
-}
+gridViewBtn.addEventListener('click', () => {
+    container.className = 'cards grid-view';
+    gridViewBtn.classList.add('active');
+    listViewBtn.classList.remove('active');
+});
 
-if (listViewBtn) {
-    listViewBtn.addEventListener('click', () => {
-        container.className = 'cards list-view';
-        listViewBtn.classList.add('active');
-        if (gridViewBtn) gridViewBtn.classList.remove('active');
-    });
-}
+listViewBtn.addEventListener('click', () => {
+    container.className = 'cards list-view';
+    listViewBtn.classList.add('active');
+    gridViewBtn.classList.remove('active');
+});
 
 
 function populateGenres() {
-    if (!genreSelect) return;
     const allGenres = new Set();
     animeData.forEach(anime => {
         anime.genres.forEach(genre => allGenres.add(genre));
@@ -440,13 +372,13 @@ function populateGenres() {
     });
 }
 
-if (genreSelect) genreSelect.addEventListener('change', updateDisplay);
-if (statusSelect) statusSelect.addEventListener('change', updateDisplay);
-if (sortSelect) sortSelect.addEventListener('change', updateDisplay);
+genreSelect.addEventListener('change', updateDisplay);
+statusSelect.addEventListener('change', updateDisplay);
+sortSelect.addEventListener('change', updateDisplay);
 
 // Init
 populateGenres();
-if (window.innerWidth <= 768 && listViewBtn) {
+if (window.innerWidth <= 768) {
     listViewBtn.click();
 }
 updateDisplay();

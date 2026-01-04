@@ -8,34 +8,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=20260104_FIX_LAYOUT">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <!-- DEBUG CONSOLE (Hidden by default, shows on error) -->
-    <div id="debug-console"
-        style="display:none; position:fixed; bottom:0; left:0; width:100%; height:150px; background:rgba(0,0,0,0.9); color:#ff4444; z-index:9999; padding:20px; overflow-y:scroll; border-top: 2px solid #ff4444; font-family:monospace; user-select:text;">
-        <button onclick="document.getElementById('debug-console').style.display='none'"
-            style="position:absolute; top:5px; right:10px; background:#333; color:white; border:none; padding:5px 10px; cursor:pointer;">X
-            Chiudi</button>
-        <h3>🔍 Console Errori (Copia questo messaggio se scompare il sito)</h3>
-        <pre id="debug-log" style="white-space: pre-wrap; word-wrap: break-word;"></pre>
-    </div>
-    <script>
-        window.onerror = function (msg, url, lineNo, columnNo, error) {
-            var consoleDiv = document.getElementById('debug-console');
-            var log = document.getElementById('debug-log');
-            consoleDiv.style.display = 'block';
-            log.innerHTML += `🛑 ERRORE: ${msg}\n📄 File: ${url.split('?')[0]}\n📍 Riga: ${lineNo}:${columnNo}\n\n`;
-            return false;
-        };
-        window.addEventListener('unhandledrejection', function (event) {
-            var consoleDiv = document.getElementById('debug-console');
-            var log = document.getElementById('debug-log');
-            consoleDiv.style.display = 'block';
-            log.innerHTML += `⚠️ PROMISE REJECTED: ${event.reason}\n\n`;
-        });
-    </script>
+
     <header class="site-header">
         <div class="logo-container">
             <h1>ARCHIVIO <span class="accent-text">ANIME</span></h1>
@@ -54,11 +31,6 @@
             <option value="Finito">Finito</option>
             <option value="Film">Film</option>
         </select>
-        <select id="user-list-select" title="Le tue liste" aria-label="Le tue liste">
-            <option value="Tutti">Le tue liste (Login)</option>
-            <option value="watched">✅ Visti</option>
-            <option value="towatch">🕒 Da Vedere</option>
-        </select>
         <div id="view-switcher">
             <button id="grid-view-btn" class="active" title="Vista a griglia" aria-label="Vista a griglia">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -71,25 +43,55 @@
                 </svg>
             </button>
         </div>
-        <div class="legend-bar"
-            style="text-align:center; font-size: 0.9rem; color: #a0a0b0; margin-bottom: 1.5rem; opacity: 0.8;">
-            <span style="margin-right: 15px;">👁️ = Visto</span>
-            <span>🕒 = Da Vedere</span>
+    </div>
+
+    <div class="sort-container">
+        <label for="sort-select">Ordina per:</label>
+        <select id="sort-select" title="Ordina risultati" aria-label="Ordina risultati">
+            <option value="titolo">Titolo</option>
+            <option value="anno">Anno</option>
+            <option value="stato">Stato</option>
+        </select>
+    </div>
+
+    <div class="cards grid-view" id="cards-container"></div>
+
+    <footer class="site-footer">
+        <p>Versione Archivio aggiornata al: <strong>04 Gennaio 2026</strong></p>
+    </footer>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal-container">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <span class="close-button" id="close-auth">&times;</span>
+            <h2 id="auth-title">Accedi</h2>
+
+            <div class="auth-features"
+                style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; text-align: left; font-size: 0.9rem; color: #ddd;">
+                <p style="margin-bottom: 0.5rem;"><strong>Perché registrarsi?</strong></p>
+                <ul style="padding-left: 1.2rem; margin: 0;">
+                    <li>👁️ Tieni traccia degli anime <strong>Visti</strong></li>
+                    <li>🕒 Crea la tua lista <strong>Da Vedere</strong></li>
+                    <li>☁️ Sincronizza tutto sui tuoi dispositivi</li>
+                </ul>
+            </div>
+
+            <form id="auth-form" class="auth-form">
+                <input type="email" id="auth-email" class="auth-input" placeholder="Email" required>
+                <input type="password" id="auth-password" class="auth-input" placeholder="Password" required>
+                <button type="submit" class="auth-submit">Entra</button>
+            </form>
+            <p id="auth-switch" class="auth-switch">Non hai un account? Registrati</p>
+            <p id="auth-error" style="color: #ff4444; font-size: 0.8rem; margin-top: 10px;"></p>
         </div>
     </div>
 
-    <!-- ... (sort container) ... -->
-
-    <!-- ... (cards container) ... -->
-
-    <!-- ... (footer) ... -->
-
-    <!-- Auth Modal -->
-    <!-- ... -->
+    <!-- MAIN SCRIPT (Module) -->
+    <script type="module" src="script.js"></script>
 
     <div id="anime-modal-container" class="modal-container">
         <div class="modal-content">
-            <span class="close-button" id="close-anime-modal">&times;</span>
+            <span class="close-button">&times;</span>
             <div class="modal-body">
                 <div class="modal-image">
                     <img id="modal-img" src="" alt="Copertina anime">
@@ -111,8 +113,6 @@
         </div>
     </div>
 
-    <!-- MAIN SCRIPT (Module) - MOVED TO END -->
-    <script type="module" src="script.js?v=20260104_FIX6_ORDER"></script>
 </body>
 
 </html>
