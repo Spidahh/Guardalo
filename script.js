@@ -1,5 +1,5 @@
-import { auth, db } from './firebase-config.js';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { auth, db, googleProvider } from './firebase-config.js';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { doc, getDoc, setDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 // === DATABASE DATI ANIME ===
@@ -152,9 +152,9 @@ onAuthStateChanged(auth, async (user) => {
     }
 });
 
-// Import Google Auth
-import { signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { auth, db, googleProvider } from './firebase-config.js';
+// Import Google Auth handled at top
+
+// Auth Elements
 
 // ... (Rest of imports and state are fine)
 
