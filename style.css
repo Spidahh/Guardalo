@@ -571,11 +571,13 @@ select:focus {
     background: rgba(18, 18, 24, 0.95) !important;
     border: 1px solid var(--accent);
     box-shadow: 0 0 40px rgba(187, 134, 252, 0.15);
-    max-width: 420px !important;
+    max-width: 500px !important;
     padding: 2.5rem !important;
     position: relative;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    flex-direction: column !important;
+    /* Critical Fix */
 }
 
 #auth-title {
