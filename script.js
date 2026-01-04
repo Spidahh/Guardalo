@@ -255,6 +255,7 @@ async function toggleStatus(animeTitle, listType) {
 // === RENDER LOGIC ===
 
 function renderCards(cardsToRender) {
+    if (!container) return; // Safety Check
     container.innerHTML = '';
     if (cardsToRender.length === 0) {
         container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; grid-column: 1 / -1; margin-top: 2rem;">Nessun anime trovato con questi criteri.</p>';
@@ -347,22 +348,24 @@ if (userListSelect) {
 }
 
 function openModal(anime) {
-    modalImg.src = anime.img;
-    modalTitle.textContent = anime.title;
-    modalStudio.textContent = anime.studio;
-    modalSynopsis.textContent = anime.synopsis;
-    modalMeta.innerHTML = `<span>${anime.genres.join(' / ')}</span><span>${anime.stato}</span><span>${anime.year}</span>`;
+    if (modalImg) modalImg.src = anime.img;
+    if (modalTitle) modalTitle.textContent = anime.title;
+    if (modalStudio) modalStudio.textContent = anime.studio;
+    if (modalSynopsis) modalSynopsis.textContent = anime.synopsis;
+    if (modalMeta) modalMeta.innerHTML = `<span>${anime.genres.join(' / ')}</span><span>${anime.stato}</span><span>${anime.year}</span>`;
 
-    if (anime.structure && anime.structure.length > 0) {
-        let structureHtml = '<h4>Struttura</h4><ul>';
-        anime.structure.forEach(part => {
-            const episodeText = isNaN(part.episodes) ? part.episodes : `${part.episodes} ep.`;
-            structureHtml += `<li>${part.name}: <strong>${episodeText}</strong></li>`;
-        });
-        structureHtml += '</ul>';
-        modalStructure.innerHTML = structureHtml;
-    } else {
-        modalStructure.innerHTML = '';
+    if (modalStructure) {
+        if (anime.structure && anime.structure.length > 0) {
+            let structureHtml = '<h4>Struttura</h4><ul>';
+            anime.structure.forEach(part => {
+                const episodeText = isNaN(part.episodes) ? part.episodes : `${part.episodes} ep.`;
+                structureHtml += `<li>${part.name}: <strong>${episodeText}</strong></li>`;
+            });
+            structureHtml += '</ul>';
+            modalStructure.innerHTML = structureHtml;
+        } else {
+            modalStructure.innerHTML = '';
+        }
     }
 
     // Modal Action Buttons State
@@ -383,12 +386,14 @@ function openModal(anime) {
         modalToggleTowatch.onclick = () => toggleStatus(anime.title, 'towatch').then(() => openModal(anime));
     }
 
-    modalContainer.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
+    if (modalContainer) {
+        modalContainer.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 function closeModal() {
-    modalContainer.style.display = 'none';
+    if (modalContainer) modalContainer.style.display = 'none';
     document.body.style.overflow = 'auto';
 }
 
