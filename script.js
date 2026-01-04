@@ -402,9 +402,11 @@ if (closeModalButton) {
     closeModalButton.addEventListener('click', closeModal);
 }
 
-modalContainer.addEventListener('click', (event) => {
-    if (event.target === modalContainer) { closeModal(); }
-});
+if (modalContainer) {
+    modalContainer.addEventListener('click', (event) => {
+        if (event.target === modalContainer) { closeModal(); }
+    });
+}
 
 // View Swithcers
 gridViewBtn.addEventListener('click', () => {
