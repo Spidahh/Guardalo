@@ -105,48 +105,29 @@ const listViewBtn = document.getElementById('list-view-btn');
 // Modal Elements
 const modalContainer = document.getElementById('anime-modal-container');
 const closeModalButton = document.getElementById('close-anime-modal'); // Updated Selector
-// ...
-// ...
-// Monitor Auth State
-onAuthStateChanged(auth, async (user) => {
-    currentUser = user;
-    if (user) {
-        loginBtn.textContent = "Profilo";
-        authModal.style.display = 'none';
-
-        // Update user list select text
-        if (userListSelect) userListSelect.options[0].textContent = "Tutto il catalogo";
-
-        // Listener realtime sul database
-        onSnapshot(doc(db, "users", user.uid), (doc) => {
-            if (doc.exists()) {
-                userLists = doc.data();
-                updateDisplay();
-            } else {
-                setDoc(doc.ref, { watched: [], towatch: [] });
-            }
-        });
-    } else {
-        loginBtn.textContent = "Accedi";
-        if (userListSelect) {
-            userListSelect.value = 'Tutti';
-            userListSelect.options[0].textContent = "Le tue liste (Login)";
-        }
-        userLists = { watched: [], towatch: [] };
-        updateDisplay();
-    }
-});
-
-// Import Google Auth handled at top
+const modalImg = document.getElementById('modal-img');
+const modalTitle = document.getElementById('modal-title');
+const modalStudio = document.getElementById('modal-studio');
+const modalStructure = document.getElementById('modal-structure');
+const modalMeta = document.getElementById('modal-meta');
+const modalSynopsis = document.getElementById('modal-synopsis');
+const modalToggleWatched = document.getElementById('modal-toggle-watched');
+const modalToggleTowatch = document.getElementById('modal-toggle-towatch');
 
 // Auth Elements
+const authModal = document.getElementById('auth-modal');
+const loginBtn = document.getElementById('login-btn');
+const closeAuthBtn = document.getElementById('close-auth');
+const authForm = document.getElementById('auth-form');
+const authEmailInput = document.getElementById('auth-email');
+const authPassInput = document.getElementById('auth-password');
+const authSubmitBtn = authForm ? authForm.querySelector('button') : null;
+const authSwitchBtn = document.getElementById('auth-switch');
+const authTitle = document.getElementById('auth-title');
+const authError = document.getElementById('auth-error');
 
-// ... (Rest of imports and state are fine)
-
-// Auth Elements
 const googleLoginBtn = document.getElementById('google-login');
 const forgotPassBtn = document.getElementById('forgot-password');
-// ...
 
 // Handle Google Login
 if (googleLoginBtn) {
