@@ -170,7 +170,22 @@ authSwitchBtn.addEventListener('click', () => {
     authSubmitBtn.textContent = isLoginMode ? "Entra" : "Registrati";
     authSwitchBtn.textContent = isLoginMode ? "Non hai un account? Registrati" : "Hai già un account? Accedi";
     authError.textContent = "";
+    authSwitchBtn.textContent = isLoginMode ? "Non hai un account? Registrati" : "Hai già un account? Accedi";
+    authError.textContent = "";
 });
+
+// Google Login
+const googleBtn = document.getElementById('google-login-btn');
+if (googleBtn) {
+    googleBtn.addEventListener('click', async () => {
+        try {
+            await window.auth.signInWithPopup(window.googleProvider);
+            // Auth state listener handles the rest
+        } catch (error) {
+            authError.textContent = error.message;
+        }
+    });
+}
 
 // Handle Login/Register
 authForm.addEventListener('submit', async (e) => {
