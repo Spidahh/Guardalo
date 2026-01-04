@@ -1,6 +1,5 @@
-import { auth, db } from './firebase-config.js';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { doc, getDoc, setDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+// SCRIPT.JS - Compat Mode (No Imports)
+// auth and db are now global variables from firebase-config.js
 
 // === DATABASE DATI ANIME ===
 const animeData = [
@@ -130,19 +129,19 @@ let isLoginMode = true;
 // === USER AUTH LOGIC ===
 
 // Monitor Auth State
-onAuthStateChanged(auth, async (user) => {
+auth.onAuthStateChanged(async (user) => {
     currentUser = user;
     if (user) {
         loginBtn.textContent = "Profilo";
         authModal.style.display = 'none';
         // Listener realtime sul database
-        onSnapshot(doc(db, "users", user.uid), (doc) => {
-            if (doc.exists()) {
+        db.collection("users").doc(user.uid).onSnapshot((doc) => {
+            if (doc.exists) {
                 userLists = doc.data();
-                updateDisplay(); // Rerenderizza per aggiornare icone
+                updateDisplay();
             } else {
-                // Crea profilo vuoto se non esiste
-                setDoc(doc.ref, { watched: [], towatch: [] });
+                // Crea profilo vuoto
+                db.collection("users").doc(user.uid).set({ watched: [], towatch: [] });
             }
         });
     } else {
@@ -157,7 +156,8 @@ loginBtn.addEventListener('click', () => {
     if (currentUser) {
         // Logout logic
         const confirmLogout = confirm("Vuoi disconnetterti?");
-        if (confirmLogout) signOut(auth);
+        const confirmLogout = confirm("Vuoi disconnetterti?");
+        if (confirmLogout) auth.signOut();
     } else {
         authModal.style.display = 'flex';
     }
@@ -180,9 +180,9 @@ authForm.addEventListener('submit', async (e) => {
 
     try {
         if (isLoginMode) {
-            await signInWithEmailAndPassword(auth, email, password);
+            await auth.signInWithEmailAndPassword(email, password);
         } else {
-            await createUserWithEmailAndPassword(auth, email, password);
+            await auth.createUserWithEmailAndPassword(email, password);
         }
     } catch (error) {
         authError.textContent = error.message;
@@ -216,7 +216,7 @@ async function toggleStatus(animeTitle, listType) {
     }
 
     try {
-        await updateDoc(doc(db, "users", currentUser.uid), {
+        await db.collection("users").doc(currentUser.uid).update({
             [listType]: newList,
             [otherList]: otherListContent
         });
