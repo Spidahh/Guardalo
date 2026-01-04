@@ -97,6 +97,7 @@ let userLists = { watched: [], towatch: [] };
 const container = document.getElementById('cards-container');
 const genreSelect = document.getElementById('genere-select');
 const statusSelect = document.getElementById('status-select');
+const userListSelect = document.getElementById('user-list-select'); // Fixed: Added missing declaration
 const sortSelect = document.getElementById('sort-select');
 const gridViewBtn = document.getElementById('grid-view-btn');
 const listViewBtn = document.getElementById('list-view-btn');
