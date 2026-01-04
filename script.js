@@ -96,6 +96,7 @@ let userLists = { watched: [], towatch: [] };
 const container = document.getElementById('cards-container');
 const genreSelect = document.getElementById('genere-select');
 const statusSelect = document.getElementById('status-select');
+const listSelect = document.getElementById('list-select');
 const sortSelect = document.getElementById('sort-select');
 const gridViewBtn = document.getElementById('grid-view-btn');
 const listViewBtn = document.getElementById('list-view-btn');
@@ -278,11 +279,21 @@ window.toggleCardStatus = (title, type, event) => {
 function updateDisplay() {
     const selectedGenre = genreSelect.value;
     const selectedStatus = statusSelect.value;
+    const selectedList = listSelect.value;
     const sortCriteria = sortSelect.value;
+
     let filteredAnime = animeData.filter(anime => {
         const genreMatch = (selectedGenre === 'Tutti') || anime.genres.includes(selectedGenre);
         const statusMatch = (selectedStatus === 'Tutti') || anime.stato === selectedStatus;
-        return genreMatch && statusMatch;
+
+        let listMatch = true;
+        if (selectedList === 'watched') {
+            listMatch = userLists.watched && userLists.watched.includes(anime.title);
+        } else if (selectedList === 'towatch') {
+            listMatch = userLists.towatch && userLists.towatch.includes(anime.title);
+        }
+
+        return genreMatch && statusMatch && listMatch;
     });
     filteredAnime.sort((a, b) => {
         if (sortCriteria === 'titolo') { return a.title.localeCompare(b.title); }
@@ -374,6 +385,7 @@ function populateGenres() {
 
 genreSelect.addEventListener('change', updateDisplay);
 statusSelect.addEventListener('change', updateDisplay);
+listSelect.addEventListener('change', updateDisplay);
 sortSelect.addEventListener('change', updateDisplay);
 
 // Init
