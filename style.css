@@ -751,4 +751,4 @@ select:focus {
 .forgot-pass:hover {
     color: var(--accent);
     text-decoration: underline;
-}
+}/* Modal Actions */ .modal-actions { margin-top: 4px; display: flex; gap: 10px; justify-content: center; }
