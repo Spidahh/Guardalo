@@ -375,17 +375,19 @@ function openModal(anime) {
     const isWatched = userLists.watched && userLists.watched.includes(anime.title);
     const isToWatch = userLists.towatch && userLists.towatch.includes(anime.title);
 
-    modalToggleWatched.className = `auth-btn ${isWatched ? 'active' : ''}`;
-    modalToggleWatched.style.background = isWatched ? '#00e676' : 'transparent';
-    modalToggleWatched.style.color = isWatched ? 'black' : 'var(--accent)';
+    if (modalToggleWatched) {
+        modalToggleWatched.className = `auth-btn ${isWatched ? 'active' : ''}`;
+        modalToggleWatched.style.background = isWatched ? '#00e676' : 'transparent';
+        modalToggleWatched.style.color = isWatched ? 'black' : 'var(--accent)';
+        modalToggleWatched.onclick = () => toggleStatus(anime.title, 'watched').then(() => openModal(anime));
+    }
 
-    modalToggleTowatch.className = `auth-btn ${isToWatch ? 'active' : ''}`;
-    modalToggleTowatch.style.background = isToWatch ? '#ffea00' : 'transparent';
-    modalToggleTowatch.style.color = isToWatch ? 'black' : 'var(--accent)';
-
-    // Attach listeners dynamically
-    modalToggleWatched.onclick = () => toggleStatus(anime.title, 'watched').then(() => openModal(anime));
-    modalToggleTowatch.onclick = () => toggleStatus(anime.title, 'towatch').then(() => openModal(anime));
+    if (modalToggleTowatch) {
+        modalToggleTowatch.className = `auth-btn ${isToWatch ? 'active' : ''}`;
+        modalToggleTowatch.style.background = isToWatch ? '#ffea00' : 'transparent';
+        modalToggleTowatch.style.color = isToWatch ? 'black' : 'var(--accent)';
+        modalToggleTowatch.onclick = () => toggleStatus(anime.title, 'towatch').then(() => openModal(anime));
+    }
 
     modalContainer.style.display = 'flex';
     document.body.style.overflow = 'hidden';
@@ -396,7 +398,10 @@ function closeModal() {
     document.body.style.overflow = 'auto';
 }
 
-closeModalButton.addEventListener('click', closeModal);
+if (closeModalButton) {
+    closeModalButton.addEventListener('click', closeModal);
+}
+
 modalContainer.addEventListener('click', (event) => {
     if (event.target === modalContainer) { closeModal(); }
 });
