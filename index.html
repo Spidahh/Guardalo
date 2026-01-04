@@ -61,28 +61,53 @@
     </footer>
 
     <!-- Auth Modal -->
+    <!-- Auth Modal -->
     <div id="auth-modal" class="modal-container">
-        <div class="modal-content" style="max-width: 400px; text-align: center;">
+        <div class="modal-content">
             <span class="close-button" id="close-auth">&times;</span>
             <h2 id="auth-title">Accedi</h2>
 
-            <div class="auth-features"
-                style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; text-align: left; font-size: 0.9rem; color: #ddd;">
-                <p style="margin-bottom: 0.5rem;"><strong>Perché registrarsi?</strong></p>
-                <ul style="padding-left: 1.2rem; margin: 0;">
-                    <li>👁️ Tieni traccia degli anime <strong>Visti</strong></li>
-                    <li>🕒 Crea la tua lista <strong>Da Vedere</strong></li>
-                    <li>☁️ Sincronizza tutto sui tuoi dispositivi</li>
-                </ul>
-            </div>
+            <button id="google-login" class="google-btn">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                Continua con Google
+            </button>
+            <div class="auth-divider"><span>oppure continua con email</span></div>
 
             <form id="auth-form" class="auth-form">
-                <input type="email" id="auth-email" class="auth-input" placeholder="Email" required>
-                <input type="password" id="auth-password" class="auth-input" placeholder="Password" required>
+                <div class="input-group">
+                    <input type="email" id="auth-email" placeholder="Email" required>
+                    <!-- Email Icon SVG -->
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                    </svg>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="auth-password" placeholder="Password" required>
+                    <!-- Lock Icon SVG -->
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3 3.1-3 1.71 0 3.1 1.29 3.1 3v2z" />
+                    </svg>
+                </div>
+
                 <button type="submit" class="auth-submit">Entra</button>
             </form>
-            <p id="auth-switch" class="auth-switch">Non hai un account? Registrati</p>
-            <p id="auth-error" style="color: #ff4444; font-size: 0.8rem; margin-top: 10px;"></p>
+
+            <p id="auth-switch" class="auth-switch">Non hai un account? <strong
+                    style="color: white;">Registrati</strong></p>
+            <p id="forgot-password" class="forgot-pass">Password dimenticata?</p>
+            <p id="auth-error"
+                style="color: #ff4444; font-size: 0.8rem; margin-top: 10px; text-align: center; font-weight: bold;"></p>
+
+            <div class="auth-features" style="margin-top: 1.5rem;">
+                <p style="margin-bottom: 0.5rem; color: #fff;"><strong>Il mondo Anime ti aspetta:</strong></p>
+                <ul style="padding-left: 0; margin: 0; list-style: none;">
+                    <li>👁️ Tieni traccia di cosa hai visto</li>
+                    <li>🕒 Gestisci la tua Watchlist</li>
+                    <li>☁️ Sync automatico ovunque</li>
+                </ul>
+            </div>
         </div>
     </div>
 
