@@ -277,10 +277,10 @@ window.toggleCardStatus = (title, type, event) => {
 };
 
 function updateDisplay() {
-    const selectedGenre = genreSelect.value;
-    const selectedStatus = statusSelect.value;
-    const selectedList = listSelect.value;
-    const sortCriteria = sortSelect.value;
+    const selectedGenre = genreSelect ? genreSelect.value : 'Tutti';
+    const selectedStatus = statusSelect ? statusSelect.value : 'Tutti';
+    const selectedList = listSelect ? listSelect.value : 'Tutti';
+    const sortCriteria = sortSelect ? sortSelect.value : 'titolo';
 
     let filteredAnime = animeData.filter(anime => {
         const genreMatch = (selectedGenre === 'Tutti') || anime.genres.includes(selectedGenre);
@@ -387,6 +387,8 @@ genreSelect.addEventListener('change', updateDisplay);
 statusSelect.addEventListener('change', updateDisplay);
 listSelect.addEventListener('change', updateDisplay);
 sortSelect.addEventListener('change', updateDisplay);
+} // End valid selectors check
+
 
 // Init
 // Init

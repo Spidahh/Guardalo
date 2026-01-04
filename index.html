@@ -9,6 +9,27 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Fix for visibility issues if CSS didn't update */
+        #list-select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            cursor: pointer;
+            outline: none;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        #list-select option {
+            background: #1a1a2e;
+            /* Dark background matching theme */
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
@@ -31,6 +52,13 @@
             <option value="Finito">Finito</option>
             <option value="Film">Film</option>
         </select>
+
+        <select id="list-select" title="Filtra per le tue liste" aria-label="Filtra per liste personali">
+            <option value="Tutti">Tutte le liste</option>
+            <option value="watched">Visti 👁️</option>
+            <option value="towatch">Da Vedere 🕒</option>
+        </select>
+
         <div id="view-switcher">
             <button id="grid-view-btn" class="active" title="Vista a griglia" aria-label="Vista a griglia">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
