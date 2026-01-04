@@ -152,6 +152,27 @@ onAuthStateChanged(auth, async (user) => {
     }
 });
 
+// Import Google Auth
+import { signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { auth, db, googleProvider } from './firebase-config.js';
+
+// ... (Rest of imports and state are fine)
+
+// Auth Elements
+const googleLoginBtn = document.getElementById('google-login');
+const forgotPassBtn = document.getElementById('forgot-password');
+// ...
+
+// Handle Google Login
+googleLoginBtn.addEventListener('click', async () => {
+    try {
+        const result = await signInWithPopup(auth, googleProvider);
+        // The onAuthStateChanged listener will handle the rest
+    } catch (error) {
+        authError.textContent = "Errore Google Login: " + error.message;
+    }
+});
+
 // Auth Modal Controls
 loginBtn.addEventListener('click', () => {
     if (currentUser) {
@@ -163,11 +184,30 @@ loginBtn.addEventListener('click', () => {
     }
 });
 closeAuthBtn.addEventListener('click', () => authModal.style.display = 'none');
+
+// Forgot Password (Simple Alert for now)
+forgotPassBtn.addEventListener('click', () => {
+    alert("Funzione di recupero password in arrivo! Per ora usa 'Continua con Google' o crea un nuovo account.");
+});
+
 authSwitchBtn.addEventListener('click', () => {
     isLoginMode = !isLoginMode;
-    authTitle.textContent = isLoginMode ? "Accedi" : "Registrati";
-    authSubmitBtn.textContent = isLoginMode ? "Entra" : "Registrati";
-    authSwitchBtn.textContent = isLoginMode ? "Non hai un account? Registrati" : "Hai già un account? Accedi";
+    // Update UI Text
+    const switchSpan = authSwitchBtn.querySelector('strong');
+
+    if (isLoginMode) {
+        authTitle.textContent = "Accedi";
+        authSubmitBtn.textContent = "Entra";
+        authSwitchBtn.innerHTML = `Non hai un account? <strong style="color: white;">Registrati</strong>`;
+        googleLoginBtn.style.display = 'flex'; // Show Google on login
+        document.querySelector('.auth-divider').style.display = 'flex';
+    } else {
+        authTitle.textContent = "Crea Account";
+        authSubmitBtn.textContent = "Registrati";
+        authSwitchBtn.innerHTML = `Hai già un account? <strong style="color: white;">Accedi</strong>`;
+        googleLoginBtn.style.display = 'none'; // Simplify register view
+        document.querySelector('.auth-divider').style.display = 'none';
+    }
     authError.textContent = "";
 });
 
@@ -185,7 +225,12 @@ authForm.addEventListener('submit', async (e) => {
             await createUserWithEmailAndPassword(auth, email, password);
         }
     } catch (error) {
-        authError.textContent = error.message;
+        let msg = error.message;
+        if (error.code === 'auth/invalid-email') msg = "Email non valida.";
+        if (error.code === 'auth/wrong-password') msg = "Password errata.";
+        if (error.code === 'auth/user-not-found') msg = "Utente non trovato.";
+        if (error.code === 'auth/email-already-in-use') msg = "Email già in uso.";
+        authError.textContent = msg;
     }
 });
 
