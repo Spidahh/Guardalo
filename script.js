@@ -214,64 +214,65 @@ if (authForm) {
             authError.textContent = msg;
         }
     });
+}
 
-    // === DATABASE LOGIC ===
+// === DATABASE LOGIC ===
 
-    async function toggleStatus(animeTitle, listType) {
-        if (!currentUser) {
-            authModal.style.display = 'flex';
-            return;
-        }
+async function toggleStatus(animeTitle, listType) {
+    if (!currentUser) {
+        authModal.style.display = 'flex';
+        return;
+    }
 
-        // listType is 'watched' or 'towatch'
-        const otherList = listType === 'watched' ? 'towatch' : 'watched';
+    // listType is 'watched' or 'towatch'
+    const otherList = listType === 'watched' ? 'towatch' : 'watched';
 
-        let newList = [...userLists[listType]];
-        let otherListContent = [...userLists[otherList]];
+    let newList = [...userLists[listType]];
+    let otherListContent = [...userLists[otherList]];
 
-        // Toggle logic
-        if (newList.includes(animeTitle)) {
-            newList = newList.filter(t => t !== animeTitle);
-        } else {
-            newList.push(animeTitle);
-            // Remove from other list if present (can't be watched and to-watch same time?)
-            // Let's decide: Yes, exclusive makes sense usually, or not. Let's keep distinct.
-            if (otherListContent.includes(animeTitle)) {
-                otherListContent = otherListContent.filter(t => t !== animeTitle);
-            }
-        }
-
-        try {
-            await updateDoc(doc(db, "users", currentUser.uid), {
-                [listType]: newList,
-                [otherList]: otherListContent
-            });
-        } catch (e) {
-            console.error("Error updating status:", e);
+    // Toggle logic
+    if (newList.includes(animeTitle)) {
+        newList = newList.filter(t => t !== animeTitle);
+    } else {
+        newList.push(animeTitle);
+        // Remove from other list if present (can't be watched and to-watch same time?)
+        // Let's decide: Yes, exclusive makes sense usually, or not. Let's keep distinct.
+        if (otherListContent.includes(animeTitle)) {
+            otherListContent = otherListContent.filter(t => t !== animeTitle);
         }
     }
 
-    // === RENDER LOGIC ===
+    try {
+        await updateDoc(doc(db, "users", currentUser.uid), {
+            [listType]: newList,
+            [otherList]: otherListContent
+        });
+    } catch (e) {
+        console.error("Error updating status:", e);
+    }
+}
 
-    function renderCards(cardsToRender) {
-        container.innerHTML = '';
-        if (cardsToRender.length === 0) {
-            container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; grid-column: 1 / -1; margin-top: 2rem;">Nessun anime trovato con questi criteri.</p>';
-            return;
-        }
-        cardsToRender.forEach((anime, index) => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.style.animationDelay = `${index * 50}ms`;
+// === RENDER LOGIC ===
 
-            // Check user status
-            const isWatched = userLists.watched && userLists.watched.includes(anime.title);
-            const isToWatch = userLists.towatch && userLists.towatch.includes(anime.title);
+function renderCards(cardsToRender) {
+    container.innerHTML = '';
+    if (cardsToRender.length === 0) {
+        container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; grid-column: 1 / -1; margin-top: 2rem;">Nessun anime trovato con questi criteri.</p>';
+        return;
+    }
+    cardsToRender.forEach((anime, index) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.animationDelay = `${index * 50}ms`;
 
-            if (isWatched) card.classList.add('watched');
-            if (isToWatch) card.classList.add('towatch');
+        // Check user status
+        const isWatched = userLists.watched && userLists.watched.includes(anime.title);
+        const isToWatch = userLists.towatch && userLists.towatch.includes(anime.title);
 
-            card.innerHTML = `
+        if (isWatched) card.classList.add('watched');
+        if (isToWatch) card.classList.add('towatch');
+
+        card.innerHTML = `
             <img src="${anime.img}" alt="Copertina di ${anime.title}">
             <div class="card-content">
                 <h2>${anime.title}</h2>
@@ -284,158 +285,158 @@ if (authForm) {
             </div>
         `;
 
-            container.appendChild(card);
+        container.appendChild(card);
 
-            // Card click opens modal (ignore clicks on action buttons)
-            card.addEventListener('click', (e) => {
-                if (!e.target.closest('.status-btn')) {
-                    openModal(anime);
-                }
-            });
-        });
-    }
-
-    // Global function for onclick events in HTML
-    window.toggleCardStatus = (title, type, event) => {
-        event.stopPropagation();
-        toggleStatus(title, type);
-    };
-
-    function updateDisplay() {
-        const selectedGenre = genreSelect.value;
-        const selectedStatus = statusSelect.value;
-        const selectedUserList = userListSelect ? userListSelect.value : 'Tutti';
-        const sortCriteria = sortSelect.value;
-
-        let filteredAnime = animeData.filter(anime => {
-            const genreMatch = (selectedGenre === 'Tutti') || anime.genres.includes(selectedGenre);
-            const statusMatch = (selectedStatus === 'Tutti') || anime.stato === selectedStatus;
-
-            // Semantic check for user lists
-            let userListMatch = true;
-            if (selectedUserList === 'watched') {
-                userListMatch = userLists.watched && userLists.watched.includes(anime.title);
-            } else if (selectedUserList === 'towatch') {
-                userListMatch = userLists.towatch && userLists.towatch.includes(anime.title);
-            }
-
-            return genreMatch && statusMatch && userListMatch;
-        });
-
-        filteredAnime.sort((a, b) => {
-            if (sortCriteria === 'titolo') { return a.title.localeCompare(b.title); }
-            if (sortCriteria === 'anno') { return b.year - a.year; }
-            if (sortCriteria === 'stato') {
-                const statusOrder = { "In corso": 1, "Prossimamente": 2, "Finito": 3, "Film": 4 };
-                return statusOrder[a.stato] - statusOrder[b.stato];
+        // Card click opens modal (ignore clicks on action buttons)
+        card.addEventListener('click', (e) => {
+            if (!e.target.closest('.status-btn')) {
+                openModal(anime);
             }
         });
-        renderCards(filteredAnime);
-    }
+    });
+}
 
-    if (userListSelect) {
-        userListSelect.addEventListener('change', () => {
-            if (!currentUser && userListSelect.value !== 'Tutti') {
-                userListSelect.value = 'Tutti';
-                updateDisplay();
-                authModal.style.display = 'flex'; // Alert user to login
-                return;
-            }
+// Global function for onclick events in HTML
+window.toggleCardStatus = (title, type, event) => {
+    event.stopPropagation();
+    toggleStatus(title, type);
+};
+
+function updateDisplay() {
+    const selectedGenre = genreSelect.value;
+    const selectedStatus = statusSelect.value;
+    const selectedUserList = userListSelect ? userListSelect.value : 'Tutti';
+    const sortCriteria = sortSelect.value;
+
+    let filteredAnime = animeData.filter(anime => {
+        const genreMatch = (selectedGenre === 'Tutti') || anime.genres.includes(selectedGenre);
+        const statusMatch = (selectedStatus === 'Tutti') || anime.stato === selectedStatus;
+
+        // Semantic check for user lists
+        let userListMatch = true;
+        if (selectedUserList === 'watched') {
+            userListMatch = userLists.watched && userLists.watched.includes(anime.title);
+        } else if (selectedUserList === 'towatch') {
+            userListMatch = userLists.towatch && userLists.towatch.includes(anime.title);
+        }
+
+        return genreMatch && statusMatch && userListMatch;
+    });
+
+    filteredAnime.sort((a, b) => {
+        if (sortCriteria === 'titolo') { return a.title.localeCompare(b.title); }
+        if (sortCriteria === 'anno') { return b.year - a.year; }
+        if (sortCriteria === 'stato') {
+            const statusOrder = { "In corso": 1, "Prossimamente": 2, "Finito": 3, "Film": 4 };
+            return statusOrder[a.stato] - statusOrder[b.stato];
+        }
+    });
+    renderCards(filteredAnime);
+}
+
+if (userListSelect) {
+    userListSelect.addEventListener('change', () => {
+        if (!currentUser && userListSelect.value !== 'Tutti') {
+            userListSelect.value = 'Tutti';
             updateDisplay();
-        });
-    }
-
-    function openModal(anime) {
-        modalImg.src = anime.img;
-        modalTitle.textContent = anime.title;
-        modalStudio.textContent = anime.studio;
-        modalSynopsis.textContent = anime.synopsis;
-        modalMeta.innerHTML = `<span>${anime.genres.join(' / ')}</span><span>${anime.stato}</span><span>${anime.year}</span>`;
-
-        if (anime.structure && anime.structure.length > 0) {
-            let structureHtml = '<h4>Struttura</h4><ul>';
-            anime.structure.forEach(part => {
-                const episodeText = isNaN(part.episodes) ? part.episodes : `${part.episodes} ep.`;
-                structureHtml += `<li>${part.name}: <strong>${episodeText}</strong></li>`;
-            });
-            structureHtml += '</ul>';
-            modalStructure.innerHTML = structureHtml;
-        } else {
-            modalStructure.innerHTML = '';
+            authModal.style.display = 'flex'; // Alert user to login
+            return;
         }
-
-        // Modal Action Buttons State
-        const isWatched = userLists.watched && userLists.watched.includes(anime.title);
-        const isToWatch = userLists.towatch && userLists.towatch.includes(anime.title);
-
-        if (modalToggleWatched) {
-            modalToggleWatched.className = `auth-btn ${isWatched ? 'active' : ''}`;
-            modalToggleWatched.style.background = isWatched ? '#00e676' : 'transparent';
-            modalToggleWatched.style.color = isWatched ? 'black' : 'var(--accent)';
-            modalToggleWatched.onclick = () => toggleStatus(anime.title, 'watched').then(() => openModal(anime));
-        }
-
-        if (modalToggleTowatch) {
-            modalToggleTowatch.className = `auth-btn ${isToWatch ? 'active' : ''}`;
-            modalToggleTowatch.style.background = isToWatch ? '#ffea00' : 'transparent';
-            modalToggleTowatch.style.color = isToWatch ? 'black' : 'var(--accent)';
-            modalToggleTowatch.onclick = () => toggleStatus(anime.title, 'towatch').then(() => openModal(anime));
-        }
-
-        modalContainer.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-        modalContainer.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-
-    if (closeModalButton) {
-        closeModalButton.addEventListener('click', closeModal);
-    }
-
-    if (modalContainer) {
-        modalContainer.addEventListener('click', (event) => {
-            if (event.target === modalContainer) { closeModal(); }
-        });
-    }
-
-    // View Swithcers
-    gridViewBtn.addEventListener('click', () => {
-        container.className = 'cards grid-view';
-        gridViewBtn.classList.add('active');
-        listViewBtn.classList.remove('active');
+        updateDisplay();
     });
+}
 
-    listViewBtn.addEventListener('click', () => {
-        container.className = 'cards list-view';
-        listViewBtn.classList.add('active');
-        gridViewBtn.classList.remove('active');
+function openModal(anime) {
+    modalImg.src = anime.img;
+    modalTitle.textContent = anime.title;
+    modalStudio.textContent = anime.studio;
+    modalSynopsis.textContent = anime.synopsis;
+    modalMeta.innerHTML = `<span>${anime.genres.join(' / ')}</span><span>${anime.stato}</span><span>${anime.year}</span>`;
+
+    if (anime.structure && anime.structure.length > 0) {
+        let structureHtml = '<h4>Struttura</h4><ul>';
+        anime.structure.forEach(part => {
+            const episodeText = isNaN(part.episodes) ? part.episodes : `${part.episodes} ep.`;
+            structureHtml += `<li>${part.name}: <strong>${episodeText}</strong></li>`;
+        });
+        structureHtml += '</ul>';
+        modalStructure.innerHTML = structureHtml;
+    } else {
+        modalStructure.innerHTML = '';
+    }
+
+    // Modal Action Buttons State
+    const isWatched = userLists.watched && userLists.watched.includes(anime.title);
+    const isToWatch = userLists.towatch && userLists.towatch.includes(anime.title);
+
+    if (modalToggleWatched) {
+        modalToggleWatched.className = `auth-btn ${isWatched ? 'active' : ''}`;
+        modalToggleWatched.style.background = isWatched ? '#00e676' : 'transparent';
+        modalToggleWatched.style.color = isWatched ? 'black' : 'var(--accent)';
+        modalToggleWatched.onclick = () => toggleStatus(anime.title, 'watched').then(() => openModal(anime));
+    }
+
+    if (modalToggleTowatch) {
+        modalToggleTowatch.className = `auth-btn ${isToWatch ? 'active' : ''}`;
+        modalToggleTowatch.style.background = isToWatch ? '#ffea00' : 'transparent';
+        modalToggleTowatch.style.color = isToWatch ? 'black' : 'var(--accent)';
+        modalToggleTowatch.onclick = () => toggleStatus(anime.title, 'towatch').then(() => openModal(anime));
+    }
+
+    modalContainer.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    modalContainer.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+if (closeModalButton) {
+    closeModalButton.addEventListener('click', closeModal);
+}
+
+if (modalContainer) {
+    modalContainer.addEventListener('click', (event) => {
+        if (event.target === modalContainer) { closeModal(); }
     });
+}
+
+// View Swithcers
+gridViewBtn.addEventListener('click', () => {
+    container.className = 'cards grid-view';
+    gridViewBtn.classList.add('active');
+    listViewBtn.classList.remove('active');
+});
+
+listViewBtn.addEventListener('click', () => {
+    container.className = 'cards list-view';
+    listViewBtn.classList.add('active');
+    gridViewBtn.classList.remove('active');
+});
 
 
-    function populateGenres() {
-        const allGenres = new Set();
-        animeData.forEach(anime => {
-            anime.genres.forEach(genre => allGenres.add(genre));
-        });
-        const sortedGenres = Array.from(allGenres).sort();
-        sortedGenres.forEach(genre => {
-            const option = document.createElement('option');
-            option.value = genre;
-            option.textContent = genre;
-            genreSelect.appendChild(option);
-        });
-    }
+function populateGenres() {
+    const allGenres = new Set();
+    animeData.forEach(anime => {
+        anime.genres.forEach(genre => allGenres.add(genre));
+    });
+    const sortedGenres = Array.from(allGenres).sort();
+    sortedGenres.forEach(genre => {
+        const option = document.createElement('option');
+        option.value = genre;
+        option.textContent = genre;
+        genreSelect.appendChild(option);
+    });
+}
 
-    genreSelect.addEventListener('change', updateDisplay);
-    statusSelect.addEventListener('change', updateDisplay);
-    sortSelect.addEventListener('change', updateDisplay);
+genreSelect.addEventListener('change', updateDisplay);
+statusSelect.addEventListener('change', updateDisplay);
+sortSelect.addEventListener('change', updateDisplay);
 
-    // Init
-    populateGenres();
-    if (window.innerWidth <= 768) {
-        listViewBtn.click();
-    }
-    updateDisplay();
+// Init
+populateGenres();
+if (window.innerWidth <= 768) {
+    listViewBtn.click();
+}
+updateDisplay();
