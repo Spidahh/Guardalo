@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <title>Archivio Anime</title>
@@ -9,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <header class="site-header">
@@ -19,28 +21,32 @@
     </header>
 
     <div id="filter-bar">
-        <select id="genere-select">
+        <select id="genere-select" title="Filtra per genere" aria-label="Filtra per genere">
             <option value="Tutti">Tutti i generi</option>
         </select>
-        <select id="status-select">
+        <select id="status-select" title="Filtra per stato" aria-label="Filtra per stato">
             <option value="Tutti">Tutti gli stati</option>
             <option value="In corso">In corso</option>
             <option value="Finito">Finito</option>
             <option value="Film">Film</option>
         </select>
         <div id="view-switcher">
-            <button id="grid-view-btn" class="active">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M3,11H11V3H3M3,21H11V13H3M13,21H21V13H13M13,3V11H21V3"/></svg>
+            <button id="grid-view-btn" class="active" title="Vista a griglia" aria-label="Vista a griglia">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M3,11H11V3H3M3,21H11V13H3M13,21H21V13H13M13,3V11H21V3" />
+                </svg>
             </button>
-            <button id="list-view-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M3,13H21V11H3M3,21H21V19H3M3,5V7H21V5"/></svg>
+            <button id="list-view-btn" title="Vista a lista" aria-label="Vista a lista">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M3,13H21V11H3M3,21H21V19H3M3,5V7H21V5" />
+                </svg>
             </button>
         </div>
     </div>
 
     <div class="sort-container">
         <label for="sort-select">Ordina per:</label>
-        <select id="sort-select">
+        <select id="sort-select" title="Ordina risultati" aria-label="Ordina risultati">
             <option value="titolo">Titolo</option>
             <option value="anno">Anno</option>
             <option value="stato">Stato</option>
@@ -48,6 +54,10 @@
     </div>
 
     <div class="cards grid-view" id="cards-container"></div>
+
+    <footer class="site-footer">
+        <p>Versione Archivio aggiornata al: <strong>04 Gennaio 2026</strong></p>
+    </footer>
 
     <script src="script.js"></script>
 
@@ -70,4 +80,5 @@
     </div>
 
 </body>
+
 </html>
