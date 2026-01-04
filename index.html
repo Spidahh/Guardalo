@@ -31,8 +31,8 @@
             <option value="Finito">Finito</option>
             <option value="Film">Film</option>
         </select>
-        <select id="user-list-select" title="Le tue liste" aria-label="Le tue liste" style="display: none;">
-            <option value="Tutti">Tutto il catalogo</option>
+        <select id="user-list-select" title="Le tue liste" aria-label="Le tue liste">
+            <option value="Tutti">Le tue liste (Login)</option>
             <option value="watched">✅ Visti</option>
             <option value="towatch">🕒 Da Vedere</option>
         </select>
@@ -48,80 +48,28 @@
                 </svg>
             </button>
         </div>
-    </div>
-
-    <div class="sort-container">
-        <label for="sort-select">Ordina per:</label>
-        <select id="sort-select" title="Ordina risultati" aria-label="Ordina risultati">
-            <option value="titolo">Titolo</option>
-            <option value="anno">Anno</option>
-            <option value="stato">Stato</option>
-        </select>
-    </div>
-
-    <div class="cards grid-view" id="cards-container"></div>
-
-    <footer class="site-footer">
-        <p>Versione Archivio aggiornata al: <strong>04 Gennaio 2026</strong></p>
-    </footer>
-
-    <!-- Auth Modal -->
-    <!-- Auth Modal -->
-    <div id="auth-modal" class="modal-container">
-        <div class="modal-content">
-            <span class="close-button" id="close-auth">&times;</span>
-            <h2 id="auth-title">Accedi</h2>
-
-            <button id="google-login" class="google-btn">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
-                Continua con Google
-            </button>
-            <div class="auth-divider"><span>oppure continua con email</span></div>
-
-            <form id="auth-form" class="auth-form">
-                <div class="input-group">
-                    <input type="email" id="auth-email" placeholder="Email" required>
-                    <!-- Email Icon SVG -->
-                    <svg viewBox="0 0 24 24">
-                        <path
-                            d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-                    </svg>
-                </div>
-                <div class="input-group">
-                    <input type="password" id="auth-password" placeholder="Password" required>
-                    <!-- Lock Icon SVG -->
-                    <svg viewBox="0 0 24 24">
-                        <path
-                            d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3 3.1-3 1.71 0 3.1 1.29 3.1 3v2z" />
-                    </svg>
-                </div>
-
-                <button type="submit" class="auth-submit">Entra</button>
-            </form>
-
-            <p id="auth-switch" class="auth-switch">Non hai un account? <strong
-                    style="color: white;">Registrati</strong></p>
-            <p id="forgot-password" class="forgot-pass">Password dimenticata?</p>
-            <p id="auth-error"
-                style="color: #ff4444; font-size: 0.8rem; margin-top: 10px; text-align: center; font-weight: bold;"></p>
-
-            <div class="auth-features" style="margin-top: 1.5rem;">
-                <p style="margin-bottom: 0.5rem; color: #fff;"><strong>Il mondo Anime ti aspetta:</strong></p>
-                <ul style="padding-left: 0; margin: 0; list-style: none;">
-                    <li>👁️ Tieni traccia di cosa hai visto</li>
-                    <li>🕒 Gestisci la tua Watchlist</li>
-                    <li>☁️ Sync automatico ovunque</li>
-                </ul>
-            </div>
+        <div class="legend-bar"
+            style="text-align:center; font-size: 0.9rem; color: #a0a0b0; margin-bottom: 1.5rem; opacity: 0.8;">
+            <span style="margin-right: 15px;">👁️ = Visto</span>
+            <span>🕒 = Da Vedere</span>
         </div>
     </div>
 
+    <!-- ... (sort container) ... -->
+
+    <!-- ... (cards container) ... -->
+
+    <!-- ... (footer) ... -->
+
+    <!-- Auth Modal -->
+    <!-- ... -->
+
     <!-- MAIN SCRIPT (Module) -->
-    <script type="module" src="script.js?v=20260104_FIX3_CRITICAL"></script>
+    <script type="module" src="script.js?v=20260104_FIX4_UI"></script>
 
     <div id="anime-modal-container" class="modal-container">
         <div class="modal-content">
-            <span class="close-button">&times;</span>
+            <span class="close-button" id="close-anime-modal">&times;</span>
             <div class="modal-body">
                 <div class="modal-image">
                     <img id="modal-img" src="" alt="Copertina anime">

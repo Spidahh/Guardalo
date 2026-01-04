@@ -303,11 +303,14 @@ select:focus {
     position: relative;
     background-color: #000;
     /* Fallback */
+    display: flex;
+    flex-direction: column;
 }
 
 .modal-image img {
     width: 100%;
-    height: 100%;
+    flex: 1;
+    /* Take available space */
     object-fit: cover;
     object-position: center top;
     /* Focus on faces */
