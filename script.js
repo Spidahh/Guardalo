@@ -387,7 +387,7 @@ genreSelect.addEventListener('change', updateDisplay);
 statusSelect.addEventListener('change', updateDisplay);
 listSelect.addEventListener('change', updateDisplay);
 sortSelect.addEventListener('change', updateDisplay);
-} // End valid selectors check
+
 
 
 // Init
